@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  datadog-agent:
+    image: gcr.io/datadoghq/agent:7
+    container_name: datadog
+    environment:
+      - TZ=America/Santiago
+      - DD_API_KEY=${DD_API_KEY}
+      - DD_SITE=${DD_SITE}
+      - DD_LOGS_ENABLED=true
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+      - /proc/:/host/proc/:ro
+    ports:
+      - "8126:8126"
+    restart: unless-stopped

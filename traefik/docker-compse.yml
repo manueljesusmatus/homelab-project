@@ -1,0 +1,40 @@
+services:
+  traefik:
+    image: traefik:v3.1
+    container_name: traefik
+    command:
+      - "--api.insecure=true"
+      #### providers
+      - "--providers.docker=true"
+      - "--providers.file.filename=/etc/traefik/traefik_dynamic.yaml"
+      #### entrypoints
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      #### certificatesresolvers
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge=true"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare"
+      - "--certificatesresolvers.cloudflare.acme.email=${CLOUDFLARE_EMAIL}"
+      - "--certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8888:8080"
+    environment:
+      - CF_DNS_API_TOKEN=${CLOUDFLARE_DNS_API_TOKEN}
+      - CASAOS_DOMAIN=${CASAOS_DOMAIN}
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "${BASE_PATH}/traefik/letsencrypt:/letsencrypt"
+      - "${BASE_PATH}/traefik/traefik_dynamic.yml:/etc/traefik/traefik_dynamic.yaml"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik-ui.rule=Host(`${TRAEFIK_DOMAIN}`)"
+      - "traefik.http.routers.traefik-ui.entrypoints=websecure"
+      - "traefik.http.routers.traefik-ui.tls.certresolver=cloudflare"
+      - "traefik.http.services.traefik-ui.loadbalancer.server.port=8080"
+    networks:
+      - traefik_net
+
+networks:
+  traefik_net:
+    external: true

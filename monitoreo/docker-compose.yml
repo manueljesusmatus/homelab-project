@@ -1,0 +1,33 @@
+version: '3.9'
+
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ${BASE_PATH}/monitoreo/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    environment:
+      - TZ=America/Santiago
+
+  node_exporter:
+    container_name: node-exporter
+    image: prom/node-exporter
+    ports:
+      - "9100:9100"
+    environment:
+      - TZ=America/Santiago
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - TZ=America/Santiago
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD}
+    depends_on:
+      - prometheus
+    restart: unless-stopped

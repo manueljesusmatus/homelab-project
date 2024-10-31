@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  web:
+    image: redis/redisinsight:latest
+    container_name: redisinsight
+    user: root
+    ports:
+      - 5540:5540
+    volumes:
+      - ${BASE_PATH}/redis/redisinsight_data:/data
+    environment:
+      - TZ=America/Santiago
+      - RI_LOG_LEVEL=debug
+    restart: unless-stopped
+
+  db:
+    image: redis/redis-stack-server:latest
+    container_name: redis-server
+    user: root
+    ports:
+      - 6379:6379 
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli --raw ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - ${BASE_PATH}/redis/data:/data
+    environment:
+      - TZ=America/Santiago
+    restart: unless-stopped

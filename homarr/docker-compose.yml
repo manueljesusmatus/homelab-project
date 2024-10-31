@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+  homarr:
+    container_name: homarr
+    image: ghcr.io/ajnart/homarr:latest
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${BASE_PATH}/homarr/configs:/app/data/configs
+      - ${BASE_PATH}/homarr/icons:/app/public/icons
+      - ${BASE_PATH}/homarr/data:/data
+    environment:
+      TZ: America/Santiago
+    ports:
+      - '7575:7575'

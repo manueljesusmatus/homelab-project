@@ -1,0 +1,15 @@
+http:
+  routers:
+    casaos:
+      rule: "Host(`${CASAOS_DOMAIN}`)"
+      entryPoints:
+        - websecure
+      service: casaos
+      tls:
+        certResolver: cloudflare
+
+  services:
+    casaos:
+      loadBalancer:
+        servers:
+          - url: "http://127.0.0.1:5000"
