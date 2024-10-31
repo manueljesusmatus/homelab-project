@@ -6,9 +6,9 @@ services:
     ports:
       - 5540:5540
     volumes:
-      - ${BASE_PATH}/redis/redisinsight_data:/data
+      - ${ROOT_DATA_DIR}/redis/redisinsight_data:/data
     environment:
-      - TZ=America/Santiago
+      - TZ=${TIMEZONE}
       - RI_LOG_LEVEL=debug
     restart: unless-stopped
 
@@ -24,7 +24,7 @@ services:
       timeout: 10s
       retries: 5
     volumes:
-      - ${BASE_PATH}/redis/data:/data
+      - ${ROOT_DATA_DIR}/redis/data:/data
     environment:
-      - TZ=America/Santiago
+      - TZ=${TIMEZONE}
     restart: unless-stopped

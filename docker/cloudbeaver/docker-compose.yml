@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   web:
     image: dbeaver/cloudbeaver:latest
@@ -7,7 +5,7 @@ services:
     ports:
       - 8978:8978
     volumes:
-      - ${BASE_PATH}/cloudbeaver:/opt/cloudbeaver/workspace
+      - ${ROOT_DATA_DIR}/cloudbeaver:/opt/cloudbeaver/workspace
     environment:
-      - TZ=America/Santiago
+      - TZ=${TIMEZONE}
     restart: unless-stopped

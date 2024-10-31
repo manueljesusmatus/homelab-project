@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   db:
     image: postgres:16.4
@@ -11,9 +10,9 @@ services:
       interval: 10s
       retries: 10
     volumes:
-      - ${BASE_PATH}/gitea/db:/var/lib/postgresql/data:rw
+      - ${ROOT_DATA_DIR}/gitea/db:/var/lib/postgresql/data:rw
     environment:
-      - TZ=America/Santiago
+      - TZ=${TIMEZONE}
       - POSTGRES_DB=${GITEA_DB}
       - POSTGRES_USER=${GITEA_USER}
       - POSTGRES_PASSWORD=${GITEA_PASSWORD}
@@ -31,11 +30,10 @@ services:
       - 3052:3000
       - 2222:22
     volumes:
-      - ${BASE_PATH}/gitea/data:/data
+      - ${ROOT_DATA_DIR}/gitea/data:/data
       - /etc/TZ:/etc/TZ:ro
       - /etc/localtime:/etc/localtime:ro
     environment:
-      - TZ=America/Santiago
       - GITEA__database__DB_TYPE=postgres
       - GITEA__database__HOST=gitea-db:5432
       - GITEA__database__NAME=${GITEA_DB}
@@ -48,8 +46,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.gitea.rule=Host(`${GITEA_DOMAIN}`)"
-      - "traefik.http.routers.gitea.entrypoints=websecure"  # HTTPS por websecure
-      - "traefik.http.routers.gitea.tls.certresolver=cloudflare"  # Certificado SSL
+      - "traefik.http.routers.gitea.entrypoints=websecure"
+      - "traefik.http.routers.gitea.tls.certresolver=cloudflare"
       - "traefik.http.services.gitea.loadbalancer.server.port=3000"
     networks:
       - traefik_net

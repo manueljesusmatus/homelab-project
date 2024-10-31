@@ -1,0 +1,35 @@
+services:
+  app:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginxproxymanager
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '443:443'
+      - '81:81'
+    environment:
+      TZ: ${TIMEZONE}
+      DB_MYSQL_HOST: "db"
+      DB_MYSQL_PORT: 3306
+      DB_MYSQL_USER: ${NGINX_DB_USER}
+      DB_MYSQL_PASSWORD: ${NGINX_DB_PASSWORD}
+      DB_MYSQL_NAME: ${NGINX_DB_NAME}
+    volumes:
+      - ${ROOT_DATA_DIR}/nginxproxymanager/data:/data
+      - ${ROOT_DATA_DIR}/nginxproxymanager/letsencrypt:/etc/letsencrypt
+    depends_on:
+      - db
+
+  db:
+    image: 'jc21/mariadb-aria:latest'
+    container_name: nginxproxymanager-db
+    restart: unless-stopped
+    environment:
+      TZ: ${TIMEZONE}
+      MYSQL_ROOT_PASSWORD: ${NGINX_DB_PASSWORD}
+      MYSQL_DATABASE: ${NGINX_DB_NAME}
+      MYSQL_USER: ${NGINX_DB_USER}
+      MYSQL_PASSWORD: ${NGINX_DB_PASSWORD}
+      MARIADB_AUTO_UPGRADE: '1'
+    volumes:
+      - ${ROOT_DATA_DIR}/nginxproxymanager/mysql:/var/lib/mysql
