@@ -11,4 +11,4 @@ services:
     environment:
       - TZ=${TIMEZONE}
     ports:
-      - '7575:7575'
+      - "7575:7575"

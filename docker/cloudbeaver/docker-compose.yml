@@ -3,7 +3,7 @@ services:
     image: dbeaver/cloudbeaver:latest
     container_name: cloudbeaver
     ports:
-      - 8978:8978
+      - "8978:8978"
     volumes:
       - ${ROOT_DATA_DIR}/cloudbeaver:/opt/cloudbeaver/workspace
     environment:

@@ -5,7 +5,7 @@ services:
     hostname: gitea-db
     privileged: true
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -q -d $POSTGRES_DB -U $POSTGRES_USER"]
+      test: [ "CMD-SHELL", "pg_isready -q -d $POSTGRES_DB -U $POSTGRES_USER" ]
       timeout: 45s
       interval: 10s
       retries: 10
@@ -27,8 +27,8 @@ services:
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
     ports:
-      - 3052:3000
-      - 2222:22
+      - "3052:3000"
+      - "2222:22"
     volumes:
       - ${ROOT_DATA_DIR}/gitea/data:/data
       - /etc/TZ:/etc/TZ:ro
