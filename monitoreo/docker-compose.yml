@@ -10,6 +10,7 @@ services:
       - "9090:9090"
     environment:
       - TZ=America/Santiago
+    restart: unless-stopped
 
   node_exporter:
     container_name: node-exporter

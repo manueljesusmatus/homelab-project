@@ -11,6 +11,6 @@ services:
       - ${BASE_PATH}/homarr/icons:/app/public/icons
       - ${BASE_PATH}/homarr/data:/data
     environment:
-      TZ: America/Santiago
+      - TZ=America/Santiago
     ports:
       - '7575:7575'

@@ -22,6 +22,7 @@ services:
     environment:
       - CF_DNS_API_TOKEN=${CLOUDFLARE_DNS_API_TOKEN}
       - CASAOS_DOMAIN=${CASAOS_DOMAIN}
+      - TZ=America/Santiago
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "${BASE_PATH}/traefik/letsencrypt:/letsencrypt"
@@ -34,6 +35,7 @@ services:
       - "traefik.http.services.traefik-ui.loadbalancer.server.port=8080"
     networks:
       - traefik_net
+    restart: unless-stopped
 
 networks:
   traefik_net:
