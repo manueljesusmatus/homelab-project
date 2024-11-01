@@ -1,6 +1,6 @@
 ---
 - name: Desplegar contenedores en lab
-  hosts: lab
+  hosts: localhost
   tasks:
     - name: Crear red Docker traefik_net
       docker_network:
