@@ -1,5 +1,8 @@
-# Ignorar todos los archivos .env en cualquier subdirectorio
+# Ignorar todos los archivos .env
 *.env
 
-# Asegurarse de no ignorar los archivos .env.example
+# Excepto examples
 !*.env.example
+
+# Ignorar all.yml
+/ansible/group_vars/all.yml

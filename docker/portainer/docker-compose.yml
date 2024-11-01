@@ -9,6 +9,6 @@ services:
       - "9443:9443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${ROOT_DATA_DIR}/portainer:/data
+      - ${ROOT_DATA_DIR}/portainer/data:/data
     environment:
       - TZ=${TIMEZONE}
