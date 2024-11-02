@@ -6,3 +6,5 @@
 
 # Ignorar all.yml
 /ansible/group_vars/all.yml
+
+.idea

@@ -3,29 +3,26 @@ services:
     image: containrrr/watchtower:latest
     container_name: watchtower
     hostname: watchtower
-    mem_limit: 512m
-    mem_reservation: 128m
-    cpu_shares: 512
     security_opt:
       - no-new-privileges=true
-    read_only: true
-    pids_limit: 100
-    cap_drop:
-      - ALL
     volumes:
-      - ${ROOT_DATA_DIR}/watchtower_logs:/var/log/watchtower
+      - ${ROOT_DATA_DIR}/watchtower/log:/var/log/watchtower
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
     environment:
-      TZ: ${TIMEZONE}
-      WATCHTOWER_CLEANUP: true
       DOCKER_API_VERSION: ${DOCKER_API_VERSION}
-      WATCHTOWER_INCLUDE_RESTARTING: true
+      # FLAGS
+      WATCHTOWER_CLEANUP: true
       WATCHTOWER_INCLUDE_STOPPED: true
-      WATCHTOWER_SCHEDULE: "0 0 */1 * * *"
       WATCHTOWER_ROLLING_RESTART: true
+      WATCHTOWER_LABEL_ENABLE: true
+      # SCHEDULE
+      WATCHTOWER_SCHEDULE: "0 0 1 * * 6"
       WATCHTOWER_TIMEOUT: 30s
-      WATCHTOWER_LOG_FORMAT: pretty
-      WATCHTOWER_LABEL_ENABLE: false
+      # DEBUGGING
+      WATCHTOWER_LOG_FORMAT: "pretty"
+      WATCHTOWER_LOG_LEVEL: "debug"
+      # NOTIFICATIONS
       WATCHTOWER_NOTIFICATIONS: email
       WATCHTOWER_NOTIFICATION_EMAIL_FROM: ${WATCHTOWER_EMAIL_FROM}
       WATCHTOWER_NOTIFICATION_EMAIL_TO: ${WATCHTOWER_EMAIL_TO}

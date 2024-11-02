@@ -10,6 +10,9 @@ services:
     environment:
       - TZ=${TIMEZONE}
       - RI_LOG_LEVEL=debug
+    labels:
+      # WATCHTOWER
+      - com.centurylinklabs.watchtower.enable=true
     restart: unless-stopped
 
   db:
@@ -27,4 +30,7 @@ services:
       - ${ROOT_DATA_DIR}/redis/data:/data
     environment:
       - TZ=${TIMEZONE}
+    labels:
+      # WATCHTOWER
+      - com.centurylinklabs.watchtower.enable=true
     restart: unless-stopped

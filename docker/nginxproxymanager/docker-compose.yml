@@ -14,6 +14,9 @@ services:
       DB_MYSQL_USER: ${NGINX_DB_USER}
       DB_MYSQL_PASSWORD: ${NGINX_DB_PASSWORD}
       DB_MYSQL_NAME: ${NGINX_DB_NAME}
+    labels:
+      # WATCHTOWER
+      - com.centurylinklabs.watchtower.enable=true
     volumes:
       - ${ROOT_DATA_DIR}/nginxproxymanager/data:/data
       - ${ROOT_DATA_DIR}/nginxproxymanager/letsencrypt:/etc/letsencrypt
@@ -31,5 +34,8 @@ services:
       MYSQL_USER: ${NGINX_DB_USER}
       MYSQL_PASSWORD: ${NGINX_DB_PASSWORD}
       MARIADB_AUTO_UPGRADE: '1'
+    labels:
+      # WATCHTOWER
+      - com.centurylinklabs.watchtower.enable=true
     volumes:
       - ${ROOT_DATA_DIR}/nginxproxymanager/mysql:/var/lib/mysql

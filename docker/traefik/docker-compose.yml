@@ -28,6 +28,9 @@ services:
       - "${ROOT_DATA_DIR}/traefik/letsencrypt:/letsencrypt"
       - "${ROOT_DATA_DIR}/traefik/traefik_dynamic.yml:/etc/traefik/traefik_dynamic.yaml"
     labels:
+      # WATCHTOWER
+      - com.centurylinklabs.watchtower.enable=true
+      # TRAEFIK
       - "traefik.enable=true"
       - "traefik.http.routers.traefik-ui.rule=Host(`${TRAEFIK_DOMAIN}`)"
       - "traefik.http.routers.traefik-ui.entrypoints=websecure"

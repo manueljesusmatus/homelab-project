@@ -39,7 +39,7 @@ services:
       ROOT_URL: ${GITEA_URL}
       GITEA__log__LEVEL: debug
       GITEA__default__APP_NAME: "Gitea: homelab server"
-      GITEA__default__RUN_MODE: dev  
+      GITEA__default__RUN_MODE: "dev"  
       GITEA__service__DISABLE_REGISTRATION: "true"
       ## DATABASE
       GITEA__database__DB_TYPE: postgres
@@ -48,7 +48,7 @@ services:
       GITEA__database__USER: ${GITEA_USER}
       GITEA__database__PASSWD: ${GITEA_PASSWORD}
       ## MAILER
-      GITEA__mailer__ENABLED: true
+      GITEA__mailer__ENABLED: "true"
       GITEA__mailer__SMTP_ADDR: ${GITEA_EMAIL_ADDR}
       GITEA__mailer__SMTP_PORT: ${GITEA_EMAIL_PORT}
       GITEA__mailer__FROM: ${GITEA_EMAIL_FROM}
@@ -59,6 +59,9 @@ services:
       GITEA__webhook__ALLOWED_HOST_LIST: "*"
     restart: unless-stopped
     labels:
+      # WATCHTOWER
+      - com.centurylinklabs.watchtower.enable=true
+      # TRAEFIK
       - "traefik.enable=true"
       - "traefik.http.routers.gitea.rule=Host(`${GITEA_DOMAIN}`)"
       - "traefik.http.routers.gitea.entrypoints=websecure"

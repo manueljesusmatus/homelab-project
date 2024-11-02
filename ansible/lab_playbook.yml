@@ -10,3 +10,5 @@
       include_tasks: stacks/gitea.yml
     - name: Ejecutar playbook de Portainer
       include_tasks: stacks/portainer.yml
+    - name: Ejecutar playbook de Watchtower
+      include_tasks: stacks/watchtower.yml

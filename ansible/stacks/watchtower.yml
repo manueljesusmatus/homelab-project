@@ -1,0 +1,27 @@
+# stacks/watchtower.yml
+
+- name: Crear directorios para volúmenes
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ ROOT_DATA_DIR }}/watchtower/log"
+
+- name: Ejecutar Docker Compose
+  docker_compose:
+    project_src: ../docker/watchtower
+    state: present
+  environment:
+    ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
+    DOCKER_API_VERSION: "{{ DOCKER_API_VERSION }}"
+    WATCHTOWER_EMAIL_FROM: "{{ WATCHTOWER_EMAIL_FROM }}"
+    WATCHTOWER_EMAIL_TO: "{{ WATCHTOWER_EMAIL_TO }}"
+    WATCHTOWER_EMAIL_SERVER: "{{ WATCHTOWER_EMAIL_SERVER }}"
+    WATCHTOWER_EMAIL_USER: "{{ WATCHTOWER_EMAIL_USER }}"
+    WATCHTOWER_EMAIL_PASSWORD: "{{ WATCHTOWER_EMAIL_PASSWORD }}"
+  register: result
+
+- name: Mostrar resultado
+  debug:
+    msg: "{{ result }}"

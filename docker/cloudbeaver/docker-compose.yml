@@ -8,4 +8,7 @@ services:
       - ${ROOT_DATA_DIR}/cloudbeaver:/opt/cloudbeaver/workspace
     environment:
       - TZ=${TIMEZONE}
+    labels:
+      # WATCHTOWER
+      - com.centurylinklabs.watchtower.enable=true
     restart: unless-stopped

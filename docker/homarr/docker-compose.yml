@@ -10,5 +10,8 @@ services:
       - ${ROOT_DATA_DIR}/homarr/data:/data
     environment:
       - TZ=${TIMEZONE}
+    labels:
+      # WATCHTOWER
+      - com.centurylinklabs.watchtower.enable=true
     ports:
       - "7575:7575"
