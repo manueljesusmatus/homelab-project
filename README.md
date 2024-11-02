@@ -3,6 +3,9 @@ Diferentes archivos de configuración para instalar aplicaciones en homelab pers
 
 ## raspberry pi
 Orden de levantamiento de los contenedores docker
+
+> ansible-playbook lab_playbook.yml
+
 1. portainer
 2. watchtower
 3. coolify
