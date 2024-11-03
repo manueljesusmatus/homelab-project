@@ -14,6 +14,7 @@
         - "{{ ROOT_DATA_DIR }}/homelab-project/docker/watchtower"
         - "{{ ROOT_DATA_DIR }}/homelab-project/docker/gitea"
         - "{{ ROOT_DATA_DIR }}/homelab-project/docker/monitoreo"
+        - "{{ ROOT_DATA_DIR }}/homelab-project/docker/homarr"
       args:
         chdir: "{{ item }}"
       tags:
@@ -28,3 +29,5 @@
       include_tasks: stacks/gitea.yml
     - name: Ejecutar playbook de Monitoreo
       include_tasks: stacks/monitoreo.yml
+    - name: Ejecutar playbook de Homarr
+      include_tasks: stacks/homarr.yml

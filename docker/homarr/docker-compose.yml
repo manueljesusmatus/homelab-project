@@ -4,7 +4,7 @@ services:
     image: ghcr.io/ajnart/homarr:latest
     restart: unless-stopped
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${ROOT_DATA_DIR}/homarr/configs:/app/data/configs
       - ${ROOT_DATA_DIR}/homarr/icons:/app/public/icons
       - ${ROOT_DATA_DIR}/homarr/data:/data
@@ -13,5 +13,17 @@ services:
     labels:
       # WATCHTOWER
       - com.centurylinklabs.watchtower.enable=true
+      # TRAEFIK
+      - "traefik.enable=true"
+      - "traefik.http.routers.homarr.rule=Host(`${HOMARR_DOMAIN}`)"
+      - "traefik.http.routers.homarr.entrypoints=websecure"
+      - "traefik.http.routers.homarr.tls.certresolver=cloudflare"
+      - "traefik.http.services.homarr.loadbalancer.server.port=7575"
     ports:
       - "7575:7575"
+    networks:
+      - traefik_net
+
+networks:
+  traefik_net:
+    external: true
