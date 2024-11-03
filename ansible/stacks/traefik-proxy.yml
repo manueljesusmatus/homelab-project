@@ -6,7 +6,13 @@
     state: directory
     mode: '0755'
   loop:
-    - "{{ ROOT_DATA_DIR }}/watchtower/log"
+    - "{{ ROOT_DATA_DIR }}/traefik/letsencrypt"
+    - "{{ ROOT_DATA_DIR }}/traefik/config"
+
+- name: Copiar archivo de configuración traefik.yaml
+  copy:
+    src: "../docker/traefik/config/traefik.yaml"
+    dest: "{{ ROOT_DATA_DIR }}/traefik/config/traefik.yaml"
 
 - name: Ejecutar Docker Compose
   docker_compose:
