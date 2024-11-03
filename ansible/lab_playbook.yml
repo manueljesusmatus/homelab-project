@@ -6,11 +6,22 @@
       docker_network:
         name: traefik_net
         state: present
+    - name: Detener servicios con Docker Compose en múltiples carpetas
+      shell: "docker-compose -f {{ item }}/docker-compose.yml down"
+      loop:
+        - "../docker/traefik"
+        - "../docker/portainer"
+        - "../docker/watchtower"
+        - "../docker/gitea"
+      args:
+        chdir: "{{ item }}"
+      tags:
+        - docker_compose_down
     - name: Ejecutar playbook de Traefik
       include_tasks: stacks/traefik-proxy.yml
-    - name: Ejecutar playbook de Gitea
-      include_tasks: stacks/gitea.yml
     - name: Ejecutar playbook de Portainer
       include_tasks: stacks/portainer.yml
     - name: Ejecutar playbook de Watchtower
       include_tasks: stacks/watchtower.yml
+    - name: Ejecutar playbook de Gitea
+      include_tasks: stacks/gitea.yml
