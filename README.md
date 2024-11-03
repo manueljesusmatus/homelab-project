@@ -4,7 +4,7 @@ Diferentes archivos de configuración para instalar aplicaciones en homelab pers
 ## raspberry pi
 Orden de levantamiento de los contenedores docker
 
-> ansible-playbook lab_playbook.yml
+> sudo ansible-playbook ansible/lab_playbook.yml --verbose --skip-tags "docker_compose_down"
 
 1. portainer
 2. watchtower

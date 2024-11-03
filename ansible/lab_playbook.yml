@@ -9,10 +9,11 @@
     - name: Detener servicios con Docker Compose en múltiples carpetas
       shell: "docker-compose -f {{ item }}/docker-compose.yml down"
       loop:
-        - "../docker/traefik"
-        - "../docker/portainer"
-        - "../docker/watchtower"
-        - "../docker/gitea"
+        - "{{ ROOT_DATA_DIR }}/homelab-project/docker/traefik"
+        - "{{ ROOT_DATA_DIR }}/homelab-project/docker/portainer"
+        - "{{ ROOT_DATA_DIR }}/homelab-project/docker/watchtower"
+        - "{{ ROOT_DATA_DIR }}/homelab-project/docker/gitea"
+        - "{{ ROOT_DATA_DIR }}/homelab-project/docker/monitoreo"
       args:
         chdir: "{{ item }}"
       tags:
@@ -25,3 +26,5 @@
       include_tasks: stacks/watchtower.yml
     - name: Ejecutar playbook de Gitea
       include_tasks: stacks/gitea.yml
+    - name: Ejecutar playbook de Monitoreo
+      include_tasks: stacks/monitoreo.yml
