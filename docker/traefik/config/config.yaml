@@ -12,5 +12,5 @@ http:
     casa:
       loadBalancer:
         servers:
-          - url: 'Host(`{{ env "TRAEFIK_CASAOS_SERVICE" }}`)'
+          - url: "{{ env 'TRAEFIK_CASAOS_SERVICE' }}"
         passHostHeader: true
