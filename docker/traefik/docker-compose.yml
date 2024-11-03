@@ -3,8 +3,6 @@ services:
     image: traefik:v3.1.5
     container_name: traefik
     command:
-      #### providers
-      - "--providers.docker=true"
       - "--providers.file.filename=/etc/traefik/traefik.yaml"
       #### certificatesresolvers
       - "--certificatesresolvers.cloudflare.acme.dnschallenge=true"
