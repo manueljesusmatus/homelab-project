@@ -16,6 +16,9 @@ services:
       - POSTGRES_DB=${GITEA_DB}
       - POSTGRES_USER=${GITEA_USER}
       - POSTGRES_PASSWORD=${GITEA_PASSWORD}
+    labels:
+      # WATCHTOWER
+      - com.centurylinklabs.watchtower.enable=true
     restart: unless-stopped
     networks:
       - traefik_net

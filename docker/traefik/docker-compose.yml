@@ -1,15 +1,11 @@
 services:
   traefik:
-    image: traefik:v3.1
+    image: traefik:v3.1.5
     container_name: traefik
     command:
-      - "--api.insecure=true"
       #### providers
       - "--providers.docker=true"
-      - "--providers.file.filename=/etc/traefik/traefik_dynamic.yaml"
-      #### entrypoints
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
+      - "--providers.file.filename=/etc/traefik/traefik.yaml"
       #### certificatesresolvers
       - "--certificatesresolvers.cloudflare.acme.dnschallenge=true"
       - "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare"
@@ -18,15 +14,14 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "8888:8080"
+      - "8080:8080"
     environment:
       - CF_DNS_API_TOKEN=${TRAEFIK_CLOUDFLARE_DNS_API_TOKEN}
-      - CASAOS_DOMAIN=${TRAEFIK_CASAOS_DOMAIN}
-      - TZ=${TIMEZONE}
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "/etc/localtime:/etc/localtime:ro"
       - "${ROOT_DATA_DIR}/traefik/letsencrypt:/letsencrypt"
-      - "${ROOT_DATA_DIR}/traefik/traefik_dynamic.yml:/etc/traefik/traefik_dynamic.yaml"
+      - "${ROOT_DATA_DIR}/traefik/traefik.yaml:/etc/traefik/traefik.yaml:ro"
     labels:
       # WATCHTOWER
       - com.centurylinklabs.watchtower.enable=true

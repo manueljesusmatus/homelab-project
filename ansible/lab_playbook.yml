@@ -6,6 +6,8 @@
       docker_network:
         name: traefik_net
         state: present
+    - name: Ejecutar playbook de Traefik
+      include_tasks: stacks/traefik-proxy.yml
     - name: Ejecutar playbook de Gitea
       include_tasks: stacks/gitea.yml
     - name: Ejecutar playbook de Portainer
