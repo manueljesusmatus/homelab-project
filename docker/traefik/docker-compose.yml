@@ -14,7 +14,6 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "${ROOT_DATA_DIR}/traefik/letsencrypt:/letsencrypt"
-      - "${ROOT_DATA_DIR}/traefik/certs:/var/traefik/certs"
       - "${ROOT_DATA_DIR}/traefik/config/traefik.yaml:/etc/traefik/traefik.yaml:ro"
     labels:
       # WATCHTOWER
