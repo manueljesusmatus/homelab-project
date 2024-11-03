@@ -6,12 +6,13 @@
     state: directory
     mode: '0755'
   loop:
-    - "{{ ROOT_DATA_DIR }}/monitoreo"
+    - "{{ ROOT_DATA_DIR }}/monitoreo/prometheus"
+    - "{{ ROOT_DATA_DIR }}/monitoreo/grafana"
 
 - name: Copiar archivos de configuración
   copy:
     src: "../docker/monitoreo/prometheus.yml"
-    dest: "{{ ROOT_DATA_DIR }}/monitoreo/prometheus.yml"
+    dest: "{{ ROOT_DATA_DIR }}/monitoreo/prometheus/prometheus.yml"
 
 - name: Ejecutar Docker Compose
   docker_compose:
