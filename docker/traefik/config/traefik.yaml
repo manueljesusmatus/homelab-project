@@ -15,6 +15,13 @@ providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"
     exposedByDefault: false
+certificatesResolvers:
+  cloudflare:
+    acme:
+      email: server@mmatush.cl
+      storage: /letsencrypt/acme.json
+      dnsChallenge:
+        provider: cloudflare
 http:
   routers:
     casaos:

@@ -15,6 +15,7 @@
   environment:
     ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
     TIMEZONE: "{{ TIMEZONE }}"
+    PORTAINER_DOMAIN: "{{ PORTAINER_DOMAIN }}"
   register: result
 
 - name: Mostrar resultado

@@ -4,11 +4,6 @@ services:
     container_name: traefik
     command:
       - "--providers.file.filename=/etc/traefik/traefik.yaml"
-      #### certificatesresolvers
-      - "--certificatesresolvers.cloudflare.acme.dnschallenge=true"
-      - "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare"
-      - "--certificatesresolvers.cloudflare.acme.email=${TRAEFIK_CLOUDFLARE_EMAIL}"
-      - "--certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json"
     ports:
       - "80:80"
       - "443:443"
@@ -19,6 +14,7 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "${ROOT_DATA_DIR}/traefik/letsencrypt:/letsencrypt"
+      - "${ROOT_DATA_DIR}/traefik/certs:/var/traefik/certs"
       - "${ROOT_DATA_DIR}/traefik/config/traefik.yaml:/etc/traefik/traefik.yaml:ro"
     labels:
       # WATCHTOWER
