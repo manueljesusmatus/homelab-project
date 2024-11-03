@@ -9,10 +9,13 @@
     - "{{ ROOT_DATA_DIR }}/traefik/letsencrypt"
     - "{{ ROOT_DATA_DIR }}/traefik/config"
 
-- name: Copiar archivo de configuración traefik.yaml
+- name: Copiar archivos de configuración
   copy:
-    src: "../docker/traefik/config/traefik.yaml"
-    dest: "{{ ROOT_DATA_DIR }}/traefik/config/traefik.yaml"
+    src: "../docker/traefik/config/{{ item }}"
+    dest: "{{ ROOT_DATA_DIR }}/traefik/config/{{ item }}"
+  loop:
+    - traefik.yaml
+    - config.yaml
 
 - name: Ejecutar Docker Compose
   docker_compose:
@@ -22,6 +25,8 @@
     ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
     TRAEFIK_CLOUDFLARE_DNS_API_TOKEN: "{{ TRAEFIK_CLOUDFLARE_DNS_API_TOKEN }}"
     TRAEFIK_DOMAIN: "{{ TRAEFIK_DOMAIN }}"
+    TRAEFIK_CASAOS_DOMAIN: "{{ TRAEFIK_CASAOS_DOMAIN }}"
+    TRAEFIK_CASAOS_SERVICE: "{{ TRAEFIK_CASAOS_SERVICE }}"
   register: result
 
 - name: Mostrar resultado

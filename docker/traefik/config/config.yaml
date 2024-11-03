@@ -1,0 +1,16 @@
+http:
+  routers:
+    casa:
+      rule: 'Host(`{{ env "TRAEFIK_CASAOS_DOMAIN" }}`)'
+      entryPoints:
+        - websecure
+      service: casa
+      tls:
+        certResolver: cloudflare
+
+  services:
+    casa:
+      loadBalancer:
+        servers:
+          - url: 'Host(`{{ env "TRAEFIK_CASAOS_SERVICE" }}`)'
+        passHostHeader: true

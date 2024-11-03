@@ -3,18 +3,21 @@ services:
     image: traefik:v3.1.5
     container_name: traefik
     command:
-      - "--providers.file.filename=/etc/traefik/traefik.yaml"
+      - --configFile=/etc/traefik/traefik.yaml
     ports:
       - "80:80"
       - "443:443"
       - "8080:8080"
     environment:
       - CF_DNS_API_TOKEN=${TRAEFIK_CLOUDFLARE_DNS_API_TOKEN}
+      - TRAEFIK_CASAOS_DOMAIN=${TRAEFIK_CASAOS_DOMAIN}
+      - TRAEFIK_CASAOS_SERVICE=${TRAEFIK_CASAOS_SERVICE}
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "/etc/localtime:/etc/localtime:ro"
       - "${ROOT_DATA_DIR}/traefik/letsencrypt:/letsencrypt"
       - "${ROOT_DATA_DIR}/traefik/config/traefik.yaml:/etc/traefik/traefik.yaml:ro"
+      - "${ROOT_DATA_DIR}/traefik/config/config.yaml:/etc/traefik/config.yaml:ro"
     labels:
       # WATCHTOWER
       - com.centurylinklabs.watchtower.enable=true
