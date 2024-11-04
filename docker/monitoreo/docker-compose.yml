@@ -4,8 +4,6 @@ services:
     container_name: prometheus
     volumes:
       - ${ROOT_DATA_DIR}/monitoreo/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-    ports:
-      - "9090:9090"
     environment:
       - TZ=${TIMEZONE}
     labels:
@@ -24,8 +22,6 @@ services:
   node_exporter:
     container_name: node-exporter
     image: prom/node-exporter
-    ports:
-      - "9100:9100"
     environment:
       - TZ=${TIMEZONE}
     labels:
@@ -38,8 +34,6 @@ services:
   grafana:
     image: grafana/grafana
     container_name: grafana
-    ports:
-      - "3012:3000"
     volumes:
       - ${ROOT_DATA_DIR}/monitoreo/grafana:/var/lib/grafana
     user: "$UID:$GID"
