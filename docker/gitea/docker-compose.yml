@@ -43,6 +43,7 @@ services:
       GITEA__default__APP_NAME: "Gitea: homelab server"
       GITEA__default__RUN_MODE: "dev"  
       GITEA__service__DISABLE_REGISTRATION: "true"
+      GITEA__server__SSH_PORT: 2222
       ## DATABASE
       GITEA__database__DB_TYPE: postgres
       GITEA__database__HOST: gitea-db:5432
