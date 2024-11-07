@@ -12,10 +12,10 @@ services:
       - com.centurylinklabs.watchtower.enable=true
       # TRAEFIK
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik-ui.rule=Host(`${NAVIDROME_DOMAIN}`)"
-      - "traefik.http.routers.traefik-ui.entrypoints=websecure"
-      - "traefik.http.routers.traefik-ui.tls.certresolver=cloudflare"
-      - "traefik.http.services.traefik-ui.loadbalancer.server.port=4533"
+      - "traefik.http.routers.navidrome.rule=Host(`${NAVIDROME_DOMAIN}`)"
+      - "traefik.http.routers.navidrome.entrypoints=websecure"
+      - "traefik.http.routers.navidrome.tls.certresolver=cloudflare"
+      - "traefik.http.services.navidrome.loadbalancer.server.port=4533"
     networks:
       - traefik_net
     restart: unless-stopped
