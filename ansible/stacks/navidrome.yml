@@ -1,0 +1,24 @@
+# stacks/navidrome.yml
+
+- name: Crear directorios para volúmenes
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ ROOT_DATA_DIR }}/navidrome/music"
+    - "{{ ROOT_DATA_DIR }}/navidrome/data"
+
+- name: Ejecutar Docker Compose
+  docker_compose:
+    project_src: ../docker/navidrome
+    state: present
+  environment:
+    ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
+    TIMEZONE: "{{ TIMEZONE }}"
+    NAVIDROME_DOMAIN: "{{ NAVIDROME_DOMAIN }}"
+  register: result
+
+- name: Mostrar resultado
+  debug:
+    msg: "{{ result }}"

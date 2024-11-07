@@ -31,3 +31,5 @@
       include_tasks: stacks/monitoreo.yml
     - name: Ejecutar playbook de Homarr
       include_tasks: stacks/homarr.yml
+    - name: Ejecutar playbook de Navidrome
+      include_tasks: stacks/navidrome.yml

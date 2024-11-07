@@ -1,0 +1,25 @@
+services:
+  navidrome:
+    image: deluan/navidrome
+    container_name: navidrome
+    volumes:
+      - ${ROOT_DATA_DIR}/navidrome/music:/music
+      - ${ROOT_DATA_DIR}/navidrome/data:/data
+    environment:
+      - TZ=${TIMEZONE}
+    labels:
+      # WATCHTOWER
+      - com.centurylinklabs.watchtower.enable=true
+      # TRAEFIK
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik-ui.rule=Host(`${NAVIDROME_DOMAIN}`)"
+      - "traefik.http.routers.traefik-ui.entrypoints=websecure"
+      - "traefik.http.routers.traefik-ui.tls.certresolver=cloudflare"
+      - "traefik.http.services.traefik-ui.loadbalancer.server.port=4533"
+    networks:
+      - traefik_net
+    restart: unless-stopped
+
+networks:
+  traefik_net:
+    external: true
