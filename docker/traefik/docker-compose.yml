@@ -10,7 +10,8 @@ services:
       - "8080:8080"
     environment:
       - CF_DNS_API_TOKEN=${TRAEFIK_CLOUDFLARE_DNS_API_TOKEN}
-      - TRAEFIK_CASAOS_DOMAIN=${TRAEFIK_CASAOS_DOMAIN}
+      - TRAEFIK_MAIL_CERT=${TRAEFIK_MAIL_CERT}
+      - TRAEFIK_CASAOS_DOMAIN=${CASAOS_DOMAIN}
       - TRAEFIK_CASAOS_SERVICE=${TRAEFIK_CASAOS_SERVICE}
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"

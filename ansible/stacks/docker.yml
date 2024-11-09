@@ -1,0 +1,73 @@
+# stacks/docker.yml
+
+- name: Actualizar los paquetes APT
+  apt:
+    update_cache: yes
+
+- name: Instalar dependencias para instalar Docker
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+    state: present
+
+- name: Añadir la clave GPG oficial de Docker
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Añadir el repositorio oficial de Docker
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release | lower }} stable"
+    state: present
+
+- name: Instalar Docker
+  apt:
+    name: docker-ce
+    state: latest
+
+- name: Asegurarse de que el servicio Docker esté en ejecución
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Añadir el usuario al grupo 'docker'
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes
+
+- name: Verificar que Docker se puede ejecutar sin sudo
+  command: docker --version
+  register: docker_version
+  changed_when: false
+
+- name: Mostrar versión de Docker instalada
+  debug:
+    msg: "Docker versión: {{ docker_version.stdout }}"
+
+- name: Crear red Docker traefik_net
+  docker_network:
+    name: traefik_net
+    state: present
+    ipam_config:
+      - subnet: 172.21.0.0/24
+
+# Instalar Docker Compose
+- name: Descargar Docker Compose
+  get_url:
+    url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)
+    dest: /usr/local/bin/docker-compose
+    mode: 'u+x'
+
+- name: Verificar que Docker Compose está instalado
+  command: docker-compose --version
+  register: docker_compose_version
+  changed_when: false
+
+- name: Mostrar versión de Docker Compose instalada
+  debug:
+    msg: "Docker Compose versión: {{ docker_compose_version.stdout }}"

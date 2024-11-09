@@ -1,35 +1,27 @@
 ---
-- name: Desplegar contenedores en lab
+- name: Desplegar contenedores en lab principal
   hosts: localhost
+  vars:
+    stacks:
+      - traefik
+      - portainer
+      - watchtower
+      - gitea
+      - monitoreo
+      - homarr
+      - navidrome
   tasks:
-    - name: Crear red Docker traefik_net
-      docker_network:
-        name: traefik_net
-        state: present
+    - name: Instalar Docker y agregar al grupo sudoers
+      include_tasks: "stacks/docker.yml"
+      tags:
+        - install_docker
+
     - name: Detener servicios con Docker Compose en múltiples carpetas
-      shell: "docker-compose -f {{ item }}/docker-compose.yml down"
-      loop:
-        - "{{ ROOT_DATA_DIR }}/homelab-project/docker/traefik"
-        - "{{ ROOT_DATA_DIR }}/homelab-project/docker/portainer"
-        - "{{ ROOT_DATA_DIR }}/homelab-project/docker/watchtower"
-        - "{{ ROOT_DATA_DIR }}/homelab-project/docker/gitea"
-        - "{{ ROOT_DATA_DIR }}/homelab-project/docker/monitoreo"
-        - "{{ ROOT_DATA_DIR }}/homelab-project/docker/homarr"
-      args:
-        chdir: "{{ item }}"
+      shell: "docker-compose -f {{ ROOT_DATA_DIR }}/homelab-project/docker/{{ item }}/docker-compose.yml down"
+      loop: "{{ stacks }}"
       tags:
         - docker_compose_down
-    - name: Ejecutar playbook de Traefik
-      include_tasks: stacks/traefik-proxy.yml
-    - name: Ejecutar playbook de Portainer
-      include_tasks: stacks/portainer.yml
-    - name: Ejecutar playbook de Watchtower
-      include_tasks: stacks/watchtower.yml
-    - name: Ejecutar playbook de Gitea
-      include_tasks: stacks/gitea.yml
-    - name: Ejecutar playbook de Monitoreo
-      include_tasks: stacks/monitoreo.yml
-    - name: Ejecutar playbook de Homarr
-      include_tasks: stacks/homarr.yml
-    - name: Ejecutar playbook de Navidrome
-      include_tasks: stacks/navidrome.yml
+
+    - name: Ejecutar playbook de cada stack
+      include_tasks: "stacks/{{ item }}.yml"
+      loop: "{{ stacks }}"

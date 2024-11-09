@@ -1,7 +1,7 @@
 http:
   routers:
     casa:
-      rule: 'Host(`{{ env "TRAEFIK_CASAOS_DOMAIN" }}`)'
+      rule: 'Host(`{{ env "CASAOS_DOMAIN" }}`)'
       entryPoints:
         - websecure
       service: casa
