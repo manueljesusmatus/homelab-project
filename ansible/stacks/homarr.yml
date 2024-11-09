@@ -11,7 +11,7 @@
     - "{{ ROOT_DATA_DIR }}/homarr/data"
 
 - name: Ejecutar Docker Compose
-  docker_compose:
+  community.docker.docker_compose_v2:
     project_src: ../docker/homarr
     state: present
   environment:

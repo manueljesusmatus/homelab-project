@@ -10,7 +10,7 @@
     - "{{ ROOT_DATA_DIR }}/gitea/data"
 
 - name: Ejecutar Docker Compose
-  docker_compose:
+  community.docker.docker_compose_v2:
     project_src: ../docker/gitea
     state: present
   environment:

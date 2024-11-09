@@ -4,39 +4,15 @@
   apt:
     update_cache: yes
 
-- name: Instalar dependencias para instalar Docker
-  apt:
-    name:
-      - apt-transport-https
-      - ca-certificates
-      - curl
-      - software-properties-common
-    state: present
-
-- name: Añadir la clave GPG oficial de Docker
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
-
-- name: Añadir el repositorio oficial de Docker
-  apt_repository:
-    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release | lower }} stable"
-    state: present
-
-- name: Instalar Docker
-  apt:
-    name: docker-ce
-    state: latest
-
 - name: Asegurarse de que el servicio Docker esté en ejecución
   service:
     name: docker
     state: started
     enabled: yes
 
-- name: Añadir el usuario al grupo 'docker'
+- name: Añadir el usuario al grupo docker
   user:
-    name: "{{ ansible_user }}"
+    name: "{{ ANSIBLE_USER }}"
     groups: docker
     append: yes
 
@@ -50,7 +26,7 @@
     msg: "Docker versión: {{ docker_version.stdout }}"
 
 - name: Crear red Docker traefik_net
-  docker_network:
+  community.docker.docker_network:
     name: traefik_net
     state: present
     ipam_config:

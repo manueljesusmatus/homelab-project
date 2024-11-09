@@ -15,7 +15,7 @@
     dest: "{{ ROOT_DATA_DIR }}/monitoreo/prometheus/prometheus.yml"
 
 - name: Ejecutar Docker Compose
-  docker_compose:
+  community.docker.docker_compose_v2:
     project_src: ../docker/monitoreo
     state: present
   environment:

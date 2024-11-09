@@ -1,9 +1,10 @@
 ---
 - name: Desplegar contenedores en lab principal
   hosts: localhost
+  become: yes
   vars:
     stacks:
-      - traefik
+      - traefik-proxy
       - portainer
       - watchtower
       - gitea
@@ -12,12 +13,7 @@
       - navidrome
   tasks:
     - name: Instalar Docker y agregar al grupo sudoers
-      include_tasks: "stacks/docker.yml"
-      tags:
-        - install_docker
-
-    - name: Instalar Docker y agregar al grupo sudoers
-      include_tasks: "stacks/dockercomp.yml"
+      import_tasks: "stacks/docker.yml"
       tags:
         - install_docker
 
