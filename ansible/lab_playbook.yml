@@ -16,6 +16,11 @@
       tags:
         - install_docker
 
+    - name: Instalar Docker y agregar al grupo sudoers
+      include_tasks: "stacks/dockercomp.yml"
+      tags:
+        - install_docker
+
     - name: Detener servicios con Docker Compose en múltiples carpetas
       shell: "docker-compose -f {{ ROOT_DATA_DIR }}/homelab-project/docker/{{ item }}/docker-compose.yml down"
       loop: "{{ stacks }}"

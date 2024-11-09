@@ -55,19 +55,3 @@
     state: present
     ipam_config:
       - subnet: 172.21.0.0/24
-
-# Instalar Docker Compose
-- name: Descargar Docker Compose
-  get_url:
-    url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)
-    dest: /usr/local/bin/docker-compose
-    mode: 'u+x'
-
-- name: Verificar que Docker Compose está instalado
-  command: docker-compose --version
-  register: docker_compose_version
-  changed_when: false
-
-- name: Mostrar versión de Docker Compose instalada
-  debug:
-    msg: "Docker Compose versión: {{ docker_compose_version.stdout }}"
