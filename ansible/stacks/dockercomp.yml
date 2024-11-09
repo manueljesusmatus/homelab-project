@@ -1,9 +1,14 @@
 # Instalar Docker Compose
+- name: Actualizar los paquetes APT
+  apt:
+    update_cache: yes
+
 - name: Descargar Docker Compose
-  get_url:
-    url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)
+  become: yes
+  ansible.builtin.get_url:
+    url: "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}"
     dest: /usr/local/bin/docker-compose
-    mode: "u+x"
+    mode: 'u+x'
 
 - name: Verificar que Docker Compose está instalado
   command: docker-compose --version
