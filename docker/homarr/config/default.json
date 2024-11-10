@@ -12,6 +12,55 @@
   ],
   "apps": [
     {
+      "id": "35796110-b001-471f-ba96-c006f99c706f",
+      "name": "casaos",
+      "url": "https://casa.qa1.lab.mmatush.cl",
+      "appearance": {
+        "iconUrl": "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/svg/casaos.svg",
+        "appNameStatus": "normal",
+        "positionAppName": "column",
+        "lineClampAppName": 1,
+        "appNameFontSize": 16
+      },
+      "network": {
+        "enabledStatusChecker": true,
+        "statusCodes": [
+          "200",
+          "301",
+          "302",
+          "304",
+          "307",
+          "308"
+        ]
+      },
+      "behaviour": {
+        "isOpeningNewTab": true,
+        "externalUrl": "https://casa.qa1.lab.mmatush.cl"
+      },
+      "area": {
+        "type": "wrapper",
+        "properties": {
+          "id": "default"
+        }
+      },
+      "shape": {
+        "lg": {
+          "location": {
+            "x": 5,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          }
+        }
+      },
+      "integration": {
+        "type": null,
+        "properties": []
+      }
+    },
+    {
       "id": "4e90ceba-93a6-4991-831d-88df8e435413",
       "name": "portainer",
       "url": "https://portainer.qa1.lab.mmatush.cl",
@@ -208,11 +257,11 @@
       }
     },
     {
-      "id": "fcd4a889-60b0-45e5-8865-3322eb0945df",
-      "name": "grafana",
-      "url": "https://grafana.qa1.lab.mmatush.cl",
+      "id": "011c1502-f44e-4f16-bb4c-e882eef25984",
+      "name": "navidrome",
+      "url": "https://navi.qa1.lab.mmatush.cl",
       "appearance": {
-        "iconUrl": "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/svg/grafana.svg",
+        "iconUrl": "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/svg/navidrome.svg",
         "appNameStatus": "normal",
         "positionAppName": "column",
         "lineClampAppName": 1,
@@ -231,7 +280,7 @@
       },
       "behaviour": {
         "isOpeningNewTab": true,
-        "externalUrl": "https://grafana.qa1.lab.mmatush.cl"
+        "externalUrl": "https://navi.qa1.lab.mmatush.cl/"
       },
       "area": {
         "type": "wrapper",
@@ -242,7 +291,7 @@
       "shape": {
         "lg": {
           "location": {
-            "x": 2,
+            "x": 6,
             "y": 0
           },
           "size": {
@@ -254,56 +303,9 @@
       "integration": {
         "type": null,
         "properties": []
-      }
-    },
-    {
-      "id": "35796110-b001-471f-ba96-c006f99c706f",
-      "name": "casaos",
-      "url": "https://casa.qa1.lab.mmatush.cl",
-      "appearance": {
-        "iconUrl": "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/svg/casaos.svg",
-        "appNameStatus": "normal",
-        "positionAppName": "column",
-        "lineClampAppName": 1,
-        "appNameFontSize": 16
       },
-      "network": {
-        "enabledStatusChecker": true,
-        "statusCodes": [
-          "200",
-          "301",
-          "302",
-          "304",
-          "307",
-          "308"
-        ]
-      },
-      "behaviour": {
-        "isOpeningNewTab": true,
-        "externalUrl": "https://casa.qa1.lab.mmatush.cl"
-      },
-      "area": {
-        "type": "wrapper",
-        "properties": {
-          "id": "default"
-        }
-      },
-      "shape": {
-        "lg": {
-          "location": {
-            "x": 5,
-            "y": 0
-          },
-          "size": {
-            "width": 1,
-            "height": 1
-          }
-        }
-      },
-      "integration": {
-        "type": null,
-        "properties": []
-      }
+      "icon": "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/svg/navidrome.svg",
+      "wrapperId": "default"
     },
     {
       "id": "b3b2aef9-d02a-48e0-8c3f-a46fdd1f7f40",
@@ -340,7 +342,56 @@
       "shape": {
         "lg": {
           "location": {
-            "x": 6,
+            "x": 7,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          }
+        }
+      },
+      "integration": {
+        "type": null,
+        "properties": []
+      }
+    },
+    {
+      "id": "fcd4a889-60b0-45e5-8865-3322eb0945df",
+      "name": "grafana",
+      "url": "https://grafana.qa1.lab.mmatush.cl",
+      "appearance": {
+        "iconUrl": "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/svg/grafana.svg",
+        "appNameStatus": "normal",
+        "positionAppName": "column",
+        "lineClampAppName": 1,
+        "appNameFontSize": 16
+      },
+      "network": {
+        "enabledStatusChecker": true,
+        "statusCodes": [
+          "200",
+          "301",
+          "302",
+          "304",
+          "307",
+          "308"
+        ]
+      },
+      "behaviour": {
+        "isOpeningNewTab": true,
+        "externalUrl": "https://grafana.qa1.lab.mmatush.cl"
+      },
+      "area": {
+        "type": "wrapper",
+        "properties": {
+          "id": "default"
+        }
+      },
+      "shape": {
+        "lg": {
+          "location": {
+            "x": 2,
             "y": 0
           },
           "size": {
