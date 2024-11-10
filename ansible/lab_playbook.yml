@@ -18,7 +18,7 @@
         - init
     
     - name: Setup inicial
-      import_tasks: "stacks/docker.yml"
+      import_tasks: "stacks/config.yml"
       tags:
         - init
 

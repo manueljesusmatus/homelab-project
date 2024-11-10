@@ -10,6 +10,13 @@
     - "{{ ROOT_DATA_DIR }}/homarr/icons"
     - "{{ ROOT_DATA_DIR }}/homarr/data"
 
+- name: Copiar archivos de configuración
+  copy:
+    src: "../docker/homarr/config/{{ item }}"
+    dest: "{{ ROOT_DATA_DIR }}/homarr/configs/{{ item }}"
+  loop:
+    - default.json
+
 - name: Ejecutar Docker Compose
   community.docker.docker_compose_v2:
     project_src: ../docker/homarr
