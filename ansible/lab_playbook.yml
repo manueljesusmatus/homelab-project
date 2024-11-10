@@ -12,16 +12,21 @@
       - homarr
       - navidrome
   tasks:
-    - name: Instalar Docker y agregar al grupo sudoers
+    - name: Agregar al grupo sudoers
       import_tasks: "stacks/docker.yml"
       tags:
-        - install_docker
+        - init
+    
+    - name: Setup inicial
+      import_tasks: "stacks/docker.yml"
+      tags:
+        - init
 
     - name: Detener servicios con Docker Compose en múltiples carpetas
       shell: "docker-compose -f {{ ROOT_DATA_DIR }}/homelab-project/docker/{{ item }}/docker-compose.yml down"
       loop: "{{ stacks }}"
       tags:
-        - docker_compose_down
+        - down
 
     - name: Ejecutar playbook de cada stack
       include_tasks: "stacks/{{ item }}.yml"

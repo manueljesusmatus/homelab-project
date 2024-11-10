@@ -24,10 +24,3 @@
 - name: Mostrar versión de Docker instalada
   debug:
     msg: "Docker versión: {{ docker_version.stdout }}"
-
-- name: Crear red Docker traefik_net
-  community.docker.docker_network:
-    name: traefik_net
-    state: present
-    ipam_config:
-      - subnet: 172.21.0.0/24

@@ -1,0 +1,22 @@
+# stacks/config.yml
+
+- name: Ejecutar script de alias de Git
+  ansible.builtin.script: 
+    cmd: ../docker/gitea/git/alias.sh
+
+- name: Crear red Docker traefik_net
+  community.docker.docker_network:
+    name: traefik_net
+    state: present
+    ipam_config:
+      - subnet: 172.21.0.0/24
+
+- name: Crear directorios base
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "~/repos"
+    - "~/docker"
+    - "~/documents"

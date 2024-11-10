@@ -32,34 +32,29 @@ ansible-galaxy collection install community.docker --force
 
 ### Configurar Repositorio de Plantillas
 
-1. Crear carpetas para organización:
-    ```bash
-    mkdir -p /home/mmatush/docker /home/mmatush/host
-    ```
-
-2. Generar una clave SSH para autenticación (reemplaza el correo según tu preferencia):
+1. Generar una clave SSH para autenticación (reemplaza el correo según tu preferencia):
     ```bash
     ssh-keygen -t rsa -b 4096 -C "server@mmatush.cl"
     ```
 
-3. Clonar el repositorio de plantillas de configuración:
+2. Clonar el repositorio de plantillas de configuración:
     ```bash
-    git clone git@github.com:manueljesusmatus/homelab-project.git /home/mmatush/host/homelab-project
+    git clone git@github.com:manueljesusmatus/homelab-project.git /home/mmatush/repos/homelab-project
     ```
 
-4. Subir archivo all.yml en ~/host/homelab-project/ansible/group_vars
+3. Subir archivo all.yml en ~/repos/homelab-project/ansible/group_vars
 ---
 
 ### Ejecutar Playbooks de Ansible
 
-- Para ejecutar solo la tarea de instalación de Docker:
+- Para ejecutar solo la tarea de configuración inicial:
     ```bash
-    ansible-playbook ~/host/homelab-project/ansible/lab_playbook.yml --verbose --tags "install_docker"
+    ansible-playbook ~/repos/homelab-project/ansible/lab_playbook.yml --verbose --tags "init"
     ```
 
-- Para ejecutar el playbook completo, omitiendo las tareas `docker_compose_down` e `install_docker`:
+- Para ejecutar el playbook completo, omitiendo las tareas `down` e `init`:
     ```bash
-    ansible-playbook ~/host/homelab-project/ansible/lab_playbook.yml --verbose --skip-tags "docker_compose_down,install_docker"
+    ansible-playbook ~/repos/homelab-project/ansible/lab_playbook.yml --verbose --skip-tags "down,init"
     ```
 
 ---
