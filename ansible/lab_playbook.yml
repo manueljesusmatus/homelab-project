@@ -11,6 +11,7 @@
       - monitoreo
       - homarr
       - navidrome
+      - artifactory
   tasks:
     - name: Agregar al grupo sudoers
       import_tasks: "stacks/docker.yml"

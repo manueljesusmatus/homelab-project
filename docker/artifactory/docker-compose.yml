@@ -1,0 +1,41 @@
+services:
+  artifactory:
+    image: ${DOCKER_REGISTRY}/jfrog/artifactory-pro:${ARTIFACTORY_VERSION}
+    container_name: artifactory
+    environment:
+      - JF_ROUTER_ENTRYPOINTS_EXTERNALPORT=${JF_ROUTER_ENTRYPOINTS_EXTERNALPORT}
+    ports:
+      - ${JF_ROUTER_ENTRYPOINTS_EXTERNALPORT}:${JF_ROUTER_ENTRYPOINTS_EXTERNALPORT} # for router communication
+      - 8081:8081 # for artifactory communication
+    volumes:
+      - ${ROOT_DATA_DIR}/artifactory/var:/var/opt/jfrog/artifactory
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "10"
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 32000
+        hard: 40000
+    labels:
+      # WATCHTOWER
+      - com.centurylinklabs.watchtower.enable=true
+      # TRAEFIK
+      - "traefik.enable=true"
+      - "traefik.http.routers.artifactory.rule=Host(`${ARTIFACTORY_DOMAIN}`)"
+      - "traefik.http.routers.artifactory.entrypoints=websecure"
+      - "traefik.http.routers.artifactory.tls.certresolver=cloudflare"
+      - "traefik.http.services.artifactory.loadbalancer.server.port=${JF_ROUTER_ENTRYPOINTS_EXTERNALPORT}"
+    networks:
+      - traefik_net
+    depends_on:
+      - db
+
+networks:
+  traefik_net:
+    external: true
+

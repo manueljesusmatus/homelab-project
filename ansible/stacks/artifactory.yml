@@ -1,0 +1,24 @@
+# stacks/artifactory.yml
+
+- name: Crear directorios para volúmenes
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ ROOT_DATA_DIR }}/artifactory/var"
+
+- name: Ejecutar Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: ../docker/artifactory
+    state: present
+  environment:
+    ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
+    DOCKER_REGISTRY: "{{ ARTIFACTORY_DOCKER_REGISTRY }}"
+    ARTIFACTORY_VERSION: "{{ ARTIFACTORY_VERSION }}"
+    JF_ROUTER_ENTRYPOINTS_EXTERNALPORT: "{{ ARTIFACTORY_JF_ROUTER_ENTRYPOINTS_EXTERNALPORT }}"
+  register: result
+
+- name: Mostrar resultado
+  debug:
+    msg: "{{ result }}"
