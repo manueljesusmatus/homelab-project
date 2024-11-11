@@ -2,6 +2,7 @@ services:
   postgres:
     image: ${DOCKER_REGISTRY}/postgres:15.6-alpine
     container_name: artifactory-db
+    user: "$UID:$GID"
     environment:
       - POSTGRES_DB=artifactory
       - POSTGRES_USER=${DB_USER}
@@ -23,12 +24,13 @@ services:
   artifactory:
     image: ${DOCKER_REGISTRY}/jfrog/artifactory-pro:${ARTIFACTORY_VERSION}
     container_name: artifactory
+    user: "$UID:$GID"
     environment:
       - ENABLE_MIGRATION=y
       - JF_SHARED_DATABASE_TYPE=postgresql
       - JF_SHARED_DATABASE_USERNAME=${DB_USER}
       - JF_SHARED_DATABASE_PASSWORD=${DB_PASSWORD}
-      - JF_SHARED_DATABASE_URL=jdbc:postgresql://postgresql:5432/artifactory
+      - JF_SHARED_DATABASE_URL=jdbc:postgresql://artifactory-db:5432/artifactory
       - JF_SHARED_DATABASE_DRIVER=org.postgresql.Driver
       - JF_ROUTER_ENTRYPOINTS_EXTERNALPORT=${JF_ROUTER_ENTRYPOINTS_EXTERNALPORT}
     ports:
