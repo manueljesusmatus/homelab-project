@@ -22,7 +22,7 @@ services:
     networks:
       - traefik_net
   artifactory:
-    image: ${DOCKER_REGISTRY}/jfrog/artifactory-pro:${ARTIFACTORY_VERSION}
+    image: ${DOCKER_REGISTRY}/jfrog/artifactory-oss:${ARTIFACTORY_VERSION}
     container_name: artifactory
     user: "$UID:$GID"
     environment:
@@ -64,4 +64,3 @@ services:
 networks:
   traefik_net:
     external: true
-
