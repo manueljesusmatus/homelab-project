@@ -7,10 +7,22 @@ http:
       service: casa
       tls:
         certResolver: cloudflare
+    redis:
+      rule: 'Host(`{{ env "REDIS_DOMAIN" }}`)'
+      entryPoints:
+        - websecure
+      service: redis
+      tls:
+        certResolver: cloudflare
 
   services:
     casa:
       loadBalancer:
         servers:
           - url: '{{ env "TRAEFIK_CASAOS_SERVICE" }}'
+        passHostHeader: true
+    redis:
+      loadBalancer:
+        servers:
+          - url: '{{ env "TRAEFIK_REDIS_SERVICE" }}'
         passHostHeader: true

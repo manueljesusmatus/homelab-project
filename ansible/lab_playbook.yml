@@ -13,7 +13,6 @@
       - navidrome
       - artifactory
       - cloudbeaver
-      - redis
   tasks:
     - name: Agregar al grupo sudoers
       import_tasks: "stacks/docker.yml"
