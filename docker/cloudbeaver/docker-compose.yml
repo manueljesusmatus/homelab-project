@@ -2,8 +2,6 @@ services:
   web:
     image: dbeaver/cloudbeaver:latest
     container_name: cloudbeaver
-    ports:
-      - "8978:8978"
     volumes:
       - ${ROOT_DATA_DIR}/cloudbeaver:/opt/cloudbeaver/workspace
     environment:
@@ -11,4 +9,16 @@ services:
     labels:
       # WATCHTOWER
       - com.centurylinklabs.watchtower.enable=true
+      # TRAEFIK
+      - "traefik.enable=true"
+      - "traefik.http.routers.cloudbeaver.rule=Host(`${CLOUDBEAVER_DOMAIN}`)"
+      - "traefik.http.routers.cloudbeaver.entrypoints=websecure"
+      - "traefik.http.routers.cloudbeaver.tls.certresolver=cloudflare"
+      - "traefik.http.services.cloudbeaver.loadbalancer.server.port=8978"
+    networks:
+      - traefik_net
     restart: unless-stopped
+
+networks:
+  traefik_net:
+    external: true

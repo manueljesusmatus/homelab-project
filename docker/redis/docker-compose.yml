@@ -3,24 +3,27 @@ services:
     image: redis/redisinsight:latest
     container_name: redisinsight
     user: root
-    ports:
-      - "5540:5540"
     volumes:
       - ${ROOT_DATA_DIR}/redis/redisinsight_data:/data
     environment:
       - TZ=${TIMEZONE}
       - RI_LOG_LEVEL=debug
+    restart: unless-stopped
+    networks:
+      - traefik_net
     labels:
       # WATCHTOWER
       - com.centurylinklabs.watchtower.enable=true
-    restart: unless-stopped
-
+      # TRAEFIK
+      - "traefik.enable=true"
+      - "traefik.http.routers.redis.rule=Host(`${REDIS_DOMAIN}`)"
+      - "traefik.http.routers.redis.entrypoints=websecure"
+      - "traefik.http.routers.redis.tls.certresolver=cloudflare"
+      - "traefik.http.services.redis.loadbalancer.server.port=5540"
   db:
     image: redis/redis-stack-server:latest
     container_name: redis-server
     user: root
-    ports:
-      - "6379:6379"
     healthcheck:
       test: ["CMD-SHELL", "redis-cli --raw ping"]
       interval: 30s
@@ -34,3 +37,9 @@ services:
       # WATCHTOWER
       - com.centurylinklabs.watchtower.enable=true
     restart: unless-stopped
+    networks:
+      - traefik_net
+
+networks:
+  traefik_net:
+    external: true
