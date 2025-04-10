@@ -31,3 +31,21 @@
 - name: Mostrar resultado
   debug:
     msg: "{{ result }}"
+
+- name: Asegurar permisos de ejecución para backup.sh
+  ansible.builtin.file:
+    path: ../docker/gitea/git/backup.sh
+    mode: '0755'
+
+- name: Ejecutar script post despliegue
+  ansible.builtin.shell: ./backup.sh
+  args:
+    chdir: ../docker/gitea/git
+
+- name: Crear tarea cron para ejecutar backup.sh cada 10 minutos
+  ansible.builtin.cron:
+    name: "Backup de Gitea a las 3 AM"
+    minute: "0"
+    hour: "3"
+    job: "cd {{ playbook_dir }}/../docker/gitea/git && ./backup.sh"
+    user: "{{ ANSIBLE_USER }}"

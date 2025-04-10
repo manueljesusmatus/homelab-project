@@ -3,7 +3,6 @@ services:
     image: postgres:16.4
     container_name: gitea-db
     hostname: gitea-db
-    privileged: true
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -q -d $POSTGRES_DB -U $POSTGRES_USER" ]
       timeout: 45s
@@ -11,6 +10,8 @@ services:
       retries: 10
     volumes:
       - ${ROOT_DATA_DIR}/gitea/db:/var/lib/postgresql/data:rw
+      - ${ROOT_DATA_DIR}/gitea/init:/docker-entrypoint-initdb.d
+      - ${ROOT_DATA_DIR}/gitea/backups:/backup
     environment:
       - TZ=${TIMEZONE}
       - POSTGRES_DB=${GITEA_DB}
@@ -26,7 +27,6 @@ services:
     image: gitea/gitea:latest
     container_name: gitea
     hostname: gitea
-    privileged: true
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
     ports:
@@ -40,8 +40,8 @@ services:
       ## DEFAULT
       ROOT_URL: ${GITEA_URL}
       GITEA__log__LEVEL: debug
-      GITEA__default__APP_NAME: "Gitea: homelab server"
-      GITEA__default__RUN_MODE: "dev"  
+      GITEA____APP_NAME: "Gitea: homelab server"
+      GITEA____RUN_MODE: "dev"
       GITEA__service__DISABLE_REGISTRATION: "true"
       GITEA__server__SSH_PORT: 2222
       ## DATABASE

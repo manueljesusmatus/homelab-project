@@ -3,6 +3,8 @@
   hosts: localhost
   become: yes
   vars:
+    disabled_stacks:
+      - artifactory
     stacks:
       - traefik-proxy
       - portainer
@@ -27,11 +29,13 @@
     - name: Detener servicios con Docker Compose en múltiples carpetas
       shell: "docker-compose -f {{ ROOT_DATA_DIR }}/homelab-project/docker/{{ item }}/docker-compose.yml down"
       loop: "{{ stacks }}"
+      when: item not in disabled_stacks
       tags:
         - down
 
     - name: Ejecutar playbook de cada stack
       include_tasks: "stacks/{{ item }}.yml"
       loop: "{{ stacks }}"
+      when: item not in disabled_stacks
       tags:
         - up
