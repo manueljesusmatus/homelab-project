@@ -1,0 +1,25 @@
+services:
+  web:
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    hostname: uptimekuma
+    volumes:
+      - ${ROOT_DATA_DIR}/uptimekuma/data:/app/data
+    restart: unless-stopped
+    environment:
+      - TZ=${TIMEZONE}
+    labels:
+      # WATCHTOWER
+      - com.centurylinklabs.watchtower.enable=true
+      # TRAEFIK
+      - "traefik.enable=true"
+      - "traefik.http.routers.uptimekuma.rule=Host(`${UPTIMEKUMA_DOMAIN}`)"
+      - "traefik.http.routers.uptimekuma.entrypoints=websecure"
+      - "traefik.http.routers.uptimekuma.tls.certresolver=cloudflare"
+      - "traefik.http.services.uptimekuma.loadbalancer.server.port=3001"
+    networks:
+      - traefik_net
+
+networks:
+  traefik_net:
+    external: true
