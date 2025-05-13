@@ -1,0 +1,29 @@
+services:
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    privileged: true
+    user: root
+    ports:
+      - "50000:50000"
+    volumes:
+      - ${ROOT_DATA_DIR}/jenkins/data:/var/jenkins_home
+    environment:
+      - TZ=${TIMEZONE}
+      #- JAVA_OPTS=-Djava.util.logging.config.file=/var/jenkins_home/log.properties
+    labels:
+      # WATCHTOWER
+      - com.centurylinklabs.watchtower.enable=true
+      # TRAEFIK
+      - "traefik.enable=true"
+      - "traefik.http.routers.jenkins.rule=Host(`${JENKINS_DOMAIN}`)"
+      - "traefik.http.routers.jenkins.entrypoints=websecure"
+      - "traefik.http.routers.jenkins.tls.certresolver=cloudflare"
+      - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
+    networks:
+      - traefik_net
+    restart: unless-stopped
+
+networks:
+  traefik_net:
+    external: true

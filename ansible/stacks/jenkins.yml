@@ -1,0 +1,23 @@
+# stacks/jenkins.yml
+
+- name: Crear directorios para volúmenes
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ ROOT_DATA_DIR }}/jenkins/data"
+
+- name: Ejecutar Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: ../docker/jenkins
+    state: present
+  environment:
+    ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
+    TIMEZONE: "{{ TIMEZONE }}"
+    JENKINS_DOMAIN: "{{ JENKINS_DOMAIN }}"
+  register: result
+
+- name: Mostrar resultado
+  debug:
+    msg: "{{ result }}"
