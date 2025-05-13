@@ -14,13 +14,6 @@ http:
       service: redis
       tls:
         certResolver: cloudflare
-    coolify:
-      rule: 'Host(`{{ env "COOLIFY_DOMAIN" }}`)'
-      entryPoints:
-        - websecure
-      service: coolify
-      tls:
-        certResolver: cloudflare
 
   services:
     casa:
@@ -32,9 +25,4 @@ http:
       loadBalancer:
         servers:
           - url: '{{ env "TRAEFIK_REDIS_SERVICE" }}'
-        passHostHeader: true
-    coolify:
-      loadBalancer:
-        servers:
-          - url: '{{ env "TRAEFIK_COOLIFY_SERVICE" }}'
         passHostHeader: true
