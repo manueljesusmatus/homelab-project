@@ -4,13 +4,10 @@ services:
     container_name: jenkins
     privileged: true
     user: root
-    ports:
-      - "50000:50000"
     volumes:
       - ${ROOT_DATA_DIR}/jenkins/data:/var/jenkins_home
     environment:
       - TZ=${TIMEZONE}
-      #- JAVA_OPTS=-Djava.util.logging.config.file=/var/jenkins_home/log.properties
     labels:
       # WATCHTOWER
       - com.centurylinklabs.watchtower.enable=true
