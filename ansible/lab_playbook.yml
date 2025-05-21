@@ -17,6 +17,7 @@
       - cloudbeaver
       - uptimekuma
       - jenkins
+      - microbin
   tasks:
     - name: Agregar al grupo sudoers
       import_tasks: "stacks/docker.yml"

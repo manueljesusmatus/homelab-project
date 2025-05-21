@@ -1,0 +1,30 @@
+services:
+  microbin:
+    image: danielszabo99/microbin:latest
+    container_name: microbin
+    environment:
+      - TZ=${TIMEZONE}
+      - MICROBIN_PORT=8080
+      - MICROBIN_PRIVATE=true
+      - MICROBIN_ENABLE_BURN_AFTER=true
+      - MICROBIN_ENABLE_EDIT=true
+      - MICROBIN_ENABLE_PASTE_ID=true
+      - MICROBIN_ADMIN_USERNAME=${MICROBIN_ADMIN_USERNAME}
+      - MICROBIN_ADMIN_PASSWORD=${MICROBIN_ADMIN_PASSWORD}
+      - MICROBIN_HIGHLIGHTSYNTAX=true
+    labels:
+      # WATCHTOWER
+      - com.centurylinklabs.watchtower.enable=true
+      # TRAEFIK
+      - "traefik.enable=true"
+      - "traefik.http.routers.microbin.rule=Host(`${MICROBIN_DOMAIN}`)"
+      - "traefik.http.routers.microbin.entrypoints=websecure"
+      - "traefik.http.routers.microbin.tls.certresolver=cloudflare"
+      - "traefik.http.services.microbin.loadbalancer.server.port=8080"
+    restart: unless-stopped
+    networks:
+      - traefik_net
+
+networks:
+  traefik_net:
+    external: true
