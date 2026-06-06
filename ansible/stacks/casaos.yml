@@ -1,0 +1,19 @@
+# stacks/casaos.yml
+
+- name: Instalar CasaOS
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://get.casaos.io | bash
+    creates: /usr/bin/casaos
+
+- name: Copiar configuración de gateway
+  copy:
+    src: "../docker/casaos/gateway.ini"
+    dest: /etc/casaos/gateway.ini
+    mode: '0644'
+  notify: Reiniciar casaos-gateway
+
+- name: Asegurar que casaos-gateway esté activo
+  systemd:
+    name: casaos-gateway.service
+    state: started
+    enabled: true

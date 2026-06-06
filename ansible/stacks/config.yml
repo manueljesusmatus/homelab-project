@@ -11,6 +11,20 @@
     ipam_config:
       - subnet: 172.21.0.0/24
 
+- name: Crear directorio de montaje M.2
+  file:
+    path: "{{ storage_mountpoint }}"
+    state: directory
+    mode: '0755'
+
+- name: Montar dispositivo M.2 por UUID
+  ansible.posix.mount:
+    path: "{{ storage_mountpoint }}"
+    src: "UUID={{ storage_uuid }}"
+    fstype: "{{ storage_fstype }}"
+    opts: defaults
+    state: mounted
+
 - name: Crear directorios base
   file:
     path: "{{ item }}"
@@ -18,5 +32,13 @@
     mode: '0755'
   loop:
     - "~/repos"
+    - "~/repos/personal"
     - "~/docker"
     - "~/documents"
+
+- name: Clonar repositorio homelab
+  ansible.builtin.git:
+    repo: "{{ HOMELAB_REPO_URL }}"
+    dest: "/home/{{ ANSIBLE_USER }}/repos/personal/homelab-project"
+    accept_hostkey: true
+  become_user: "{{ ANSIBLE_USER }}"
