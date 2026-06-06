@@ -30,6 +30,8 @@
     path: "{{ item }}"
     state: directory
     mode: '0755'
+    owner: "{{ ANSIBLE_USER }}"
+    group: "{{ ANSIBLE_USER }}"
   loop:
     - "~/repos"
     - "~/repos/personal"
@@ -37,10 +39,11 @@
     - "~/documents"
 
 - name: Añadir clave pública SSH
-  ansible.posix.authorized_key:
-    user: "{{ ANSIBLE_USER }}"
-    key: "https://sshid.io/mmatush/RSA"
-    state: present
+  ansible.builtin.shell:
+    cmd: |
+      mkdir -p ~/.ssh
+      KEY=$(curl -fs https://sshid.io/mmatush/RSA)
+      grep -qF "$KEY" ~/.ssh/authorized_keys 2>/dev/null || echo "$KEY" >> ~/.ssh/authorized_keys
 
 - name: Clonar repositorio homelab
   ansible.builtin.git:
