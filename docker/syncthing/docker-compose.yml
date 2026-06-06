@@ -1,0 +1,31 @@
+services:
+  syncthing:
+    image: linuxserver/syncthing:latest
+    container_name: syncthing
+    hostname: syncthing
+    ports:
+      - "22000:22000/tcp"
+      - "22000:22000/udp"
+    volumes:
+      - ${ROOT_DATA_DIR}/syncthing/config:/config
+      - ${SYNCTHING_DATA_DIR}:/vaults
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TIMEZONE}
+    restart: unless-stopped
+    labels:
+      # WATCHTOWER
+      - com.centurylinklabs.watchtower.enable=true
+      # TRAEFIK
+      - "traefik.enable=true"
+      - "traefik.http.routers.syncthing.rule=Host(`${SYNCTHING_DOMAIN}`)"
+      - "traefik.http.routers.syncthing.entrypoints=websecure"
+      - "traefik.http.routers.syncthing.tls.certresolver=cloudflare"
+      - "traefik.http.services.syncthing.loadbalancer.server.port=8384"
+    networks:
+      - traefik_net
+
+networks:
+  traefik_net:
+    external: true
