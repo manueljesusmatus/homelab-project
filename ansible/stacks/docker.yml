@@ -1,5 +1,10 @@
 # stacks/docker.yml
 
+- name: Instalar Docker si no está presente
+  ansible.builtin.shell:
+    cmd: curl -fsSL https://get.docker.com | sh
+    creates: /usr/bin/docker
+
 - name: Actualizar los paquetes APT
   apt:
     update_cache: yes
