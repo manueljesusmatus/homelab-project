@@ -36,6 +36,12 @@
     - "~/docker"
     - "~/documents"
 
+- name: Añadir clave pública SSH
+  ansible.posix.authorized_key:
+    user: "{{ ANSIBLE_USER }}"
+    key: "https://sshid.io/mmatush/RSA"
+    state: present
+
 - name: Clonar repositorio homelab
   ansible.builtin.git:
     repo: "{{ HOMELAB_REPO_URL }}"
