@@ -7,13 +7,13 @@
 
 - name: Crear directorio de configuración rclone
   file:
-    path: "{{ ansible_env.HOME }}/.config/rclone"
+    path: "{{ ansible_user_dir }}/.config/rclone"
     state: directory
     mode: '0700'
 
 - name: Generar configuración rclone para S3 (no sobreescribir si ya existe)
   ansible.builtin.copy:
-    dest: "{{ ansible_env.HOME }}/.config/rclone/rclone.conf"
+    dest: "{{ ansible_user_dir }}/.config/rclone/rclone.conf"
     force: no
     mode: '0600'
     content: |
@@ -36,7 +36,7 @@
       /usr/bin/rclone sync
       {{ ROOT_DATA_DIR }}/docker
       s3backup:{{ BACKUP_S3_BUCKET }}
-      --config {{ ansible_env.HOME }}/.config/rclone/rclone.conf
+      --config {{ ansible_user_dir }}/.config/rclone/rclone.conf
       --log-file {{ ROOT_DATA_DIR }}/backup/rclone-backup.log
       --log-level INFO
       --stats-one-line
