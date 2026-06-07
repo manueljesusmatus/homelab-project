@@ -5,6 +5,13 @@
     cmd: curl -fsSL https://get.docker.com | sh
     creates: /usr/bin/docker
 
+- name: Instalar docker-compose si no está presente
+  become: yes
+  apt:
+    name: docker-compose
+    state: present
+    update_cache: yes
+
 - name: Actualizar los paquetes APT
   become: yes
   apt:
