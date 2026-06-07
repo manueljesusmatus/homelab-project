@@ -2,7 +2,7 @@
 
 # Configuración
 carpeta_mega="/Root/homelab/backups"
-destino_local="/home/mmatush/restore"
+destino_local="$HOME/restore"
 
 # Crear carpeta temporal para descarga
 mkdir -p "$temp_dir"

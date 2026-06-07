@@ -7,7 +7,7 @@ fecha=$(date +%F)
 archivo_zip="backup-$fecha.zip"
 
 # Directorios base
-directorio_base=/home/mmatush
+directorio_base=$HOME
 directorio_origen=$directorio_base/docker
 directorio_destino=$directorio_base/backup
 
