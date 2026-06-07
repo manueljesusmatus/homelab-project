@@ -17,6 +17,7 @@
     enabled: yes
 
 - name: Añadir el usuario al grupo docker
+  become: yes
   user:
     name: "{{ ANSIBLE_USER }}"
     groups: docker

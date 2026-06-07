@@ -29,13 +29,14 @@
       import_tasks: "stacks/docker.yml"
       tags:
         - init
-    
+
     - name: Setup inicial
       import_tasks: "stacks/config.yml"
       tags:
         - init
 
     - name: Instalar CasaOS
+      become: yes
       import_tasks: "stacks/casaos.yml"
       tags:
         - init
@@ -43,6 +44,7 @@
     # Esta task siempre debe ser la última del bloque de init
     # ya que reinicia el servicio y es necesario para que los cambios anteriores tengan efecto
     - name: Habilitar cgroups de memoria para RAM tracking
+      become: yes
       ansible.builtin.lineinfile:
         path: /boot/firmware/cmdline.txt
         backrefs: yes
@@ -59,7 +61,10 @@
         - down
 
     - name: Ejecutar playbook de cada stack
-      include_tasks: "stacks/{{ item }}.yml"
+      include_tasks:
+        files: "stacks/{{ item }}.yml"
+        apply:
+          tags: up
       loop: "{{ stacks }}"
       when: item not in disabled_stacks
       tags:

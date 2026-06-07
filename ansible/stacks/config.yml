@@ -5,6 +5,7 @@
     cmd: ../docker/gitea/git/alias.sh
 
 - name: Crear red Docker traefik_net
+  become: yes
   community.docker.docker_network:
     name: traefik_net
     state: present
@@ -12,12 +13,14 @@
       - subnet: 172.21.0.0/24
 
 - name: Crear directorio de montaje M.2
+  become: yes
   file:
     path: "{{ storage_mountpoint }}"
     state: directory
     mode: '0755'
 
 - name: Montar dispositivo M.2 por UUID
+  become: yes
   ansible.posix.mount:
     path: "{{ storage_mountpoint }}"
     src: "UUID={{ storage_uuid }}"

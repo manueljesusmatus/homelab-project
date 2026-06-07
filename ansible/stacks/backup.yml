@@ -31,10 +31,11 @@
     mode: '0755'
 
 - name: Sincronizar volúmenes Docker hacia S3
+  become: yes
   ansible.builtin.shell:
     cmd: >
       /usr/bin/rclone sync
-      {{ ROOT_DATA_DIR }}/docker
+      {{ ROOT_DATA_DIR }}
       s3backup:{{ BACKUP_S3_BUCKET }}
       --config {{ ansible_user_dir }}/.config/rclone/rclone.conf
       --log-file {{ ROOT_DATA_DIR }}/backup/rclone-backup.log
@@ -42,6 +43,7 @@
       --stats-one-line
 
 - name: Crear cron job de backup semanal (sábados a las 3 AM)
+  become: yes
   ansible.builtin.cron:
     name: "Backup homelab a S3 via rclone"
     minute: "0"

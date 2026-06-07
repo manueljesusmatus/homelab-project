@@ -21,11 +21,12 @@
   when: item not in disabled_stacks
 
 - name: Sincronizar datos desde S3 hacia volúmenes Docker
+  become: yes
   ansible.builtin.shell:
     cmd: >
       /usr/bin/rclone sync
       s3backup:{{ BACKUP_S3_BUCKET }}
-      {{ ROOT_DATA_DIR }}/docker
+      {{ ROOT_DATA_DIR }}
       --config {{ ansible_env.HOME }}/.config/rclone/rclone.conf
       --log-file {{ ROOT_DATA_DIR }}/backup/rclone-restore.log
       --log-level INFO
