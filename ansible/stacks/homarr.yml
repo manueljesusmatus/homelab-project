@@ -1,21 +1,33 @@
 # stacks/homarr.yml
 
-- name: Crear directorios para volúmenes
+- name: Crear directorio para datos de Homarr
   file:
-    path: "{{ item }}"
+    path: "{{ ROOT_DATA_DIR }}/homarr/appdata"
     state: directory
     mode: '0755'
-  loop:
-    - "{{ ROOT_DATA_DIR }}/homarr/configs"
-    - "{{ ROOT_DATA_DIR }}/homarr/icons"
-    - "{{ ROOT_DATA_DIR }}/homarr/data"
 
-- name: Copiar archivos de configuración
-  copy:
-    src: "../docker/homarr/config/{{ item }}"
-    dest: "{{ ROOT_DATA_DIR }}/homarr/configs/{{ item }}"
-  loop:
-    - default.json
+- name: Verificar si existe el archivo de secret key
+  ansible.builtin.stat:
+    path: "{{ ROOT_DATA_DIR }}/homarr/secret_key"
+  register: homarr_key_file
+
+- name: Generar secret key si no existe
+  ansible.builtin.shell: "openssl rand -hex 32 > {{ ROOT_DATA_DIR }}/homarr/secret_key"
+  when: not homarr_key_file.stat.exists
+
+- name: Asegurar permisos del archivo de secret key
+  ansible.builtin.file:
+    path: "{{ ROOT_DATA_DIR }}/homarr/secret_key"
+    mode: '0600'
+
+- name: Leer secret key
+  ansible.builtin.slurp:
+    src: "{{ ROOT_DATA_DIR }}/homarr/secret_key"
+  register: homarr_key_raw
+
+- name: Establecer variable de secret key
+  ansible.builtin.set_fact:
+    homarr_secret_key: "{{ homarr_key_raw.content | b64decode | trim }}"
 
 - name: Ejecutar Docker Compose
   community.docker.docker_compose_v2:
@@ -25,6 +37,7 @@
     ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
     TIMEZONE: "{{ TIMEZONE }}"
     HOMARR_DOMAIN: "{{ HOMARR_DOMAIN }}"
+    HOMARR_SECRET_KEY: "{{ homarr_secret_key }}"
   register: result
 
 - name: Mostrar resultado
