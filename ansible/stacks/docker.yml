@@ -6,6 +6,7 @@
     creates: /usr/bin/docker
 
 - name: Actualizar los paquetes APT
+  become: yes
   apt:
     update_cache: yes
 
