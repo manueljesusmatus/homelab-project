@@ -16,9 +16,8 @@
   when: not rclone_conf.stat.exists
 
 - name: Detener servicios con Docker Compose antes de restaurar
-  shell: "docker-compose -f {{ ROOT_DATA_DIR }}/homelab-project/docker/{{ item }}/docker-compose.yml down"
-  loop: "{{ stacks }}"
-  when: item not in disabled_stacks
+  ansible.builtin.command:
+    cmd: "/usr/bin/ansible-playbook {{ ROOT_DATA_DIR }}/homelab-project/ansible/lab_playbook.yml --tags down"
 
 - name: Sincronizar datos desde S3 hacia volúmenes Docker
   become: yes
