@@ -62,7 +62,7 @@
 
     - name: Ejecutar playbook de cada stack
       include_tasks:
-        files: "stacks/{{ item }}.yml"
+        file: "stacks/{{ item }}.yml"
         apply:
           tags: up
       loop: "{{ stacks }}"
