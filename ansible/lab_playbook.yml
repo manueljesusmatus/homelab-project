@@ -12,17 +12,12 @@
       - redis
     stacks:
       - traefik-proxy
-      - portainer
       - watchtower
-      - homarr
       - uptimekuma
+      - homarr
       - microbin
       - syncthing
-  handlers:
-    - name: Reiniciar casaos-gateway
-      systemd:
-        name: casaos-gateway.service
-        state: restarted
+      - portainer
 
   tasks:
     - name: Agregar al grupo sudoers

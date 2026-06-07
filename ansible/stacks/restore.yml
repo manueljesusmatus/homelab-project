@@ -15,10 +15,6 @@
     msg: "Config rclone ausente en {{ ansible_env.HOME }}/.config/rclone/rclone.conf. Corre primero --tags backup para generarla."
   when: not rclone_conf.stat.exists
 
-- name: Detener servicios con Docker Compose antes de restaurar
-  ansible.builtin.command:
-    cmd: "ansible-playbook ~/repos/lab/homelab-project/ansible/lab_playbook.yml --tags down"
-
 - name: Sincronizar datos desde S3 hacia volúmenes Docker
   become: yes
   ansible.builtin.shell:

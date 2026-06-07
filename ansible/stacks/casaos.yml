@@ -10,7 +10,6 @@
     src: "../docker/casaos/gateway.ini"
     dest: /etc/casaos/gateway.ini
     mode: '0644'
-  notify: Reiniciar casaos-gateway
 
 - name: Asegurar que casaos-gateway esté activo
   systemd:
