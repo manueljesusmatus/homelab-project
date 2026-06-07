@@ -64,3 +64,13 @@
       when: item not in disabled_stacks
       tags:
         - up
+
+    - name: Ejecutar backup a S3
+      import_tasks: "stacks/backup.yml"
+      tags:
+        - backup
+
+    - name: Restaurar desde S3
+      import_tasks: "stacks/restore.yml"
+      tags:
+        - restore

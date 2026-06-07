@@ -1,0 +1,32 @@
+# stacks/restore.yml
+
+- name: Instalar rclone si no está presente
+  ansible.builtin.shell:
+    cmd: curl https://rclone.org/install.sh | bash
+    creates: /usr/bin/rclone
+
+- name: Verificar que la configuración de rclone existe
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.config/rclone/rclone.conf"
+  register: rclone_conf
+
+- name: Fallar si no existe la configuración de rclone
+  ansible.builtin.fail:
+    msg: "Config rclone ausente en {{ ansible_env.HOME }}/.config/rclone/rclone.conf. Corre primero --tags backup para generarla."
+  when: not rclone_conf.stat.exists
+
+- name: Detener servicios con Docker Compose antes de restaurar
+  shell: "docker-compose -f {{ ROOT_DATA_DIR }}/homelab-project/docker/{{ item }}/docker-compose.yml down"
+  loop: "{{ stacks }}"
+  when: item not in disabled_stacks
+
+- name: Sincronizar datos desde S3 hacia volúmenes Docker
+  ansible.builtin.shell:
+    cmd: >
+      /usr/bin/rclone sync
+      s3backup:{{ BACKUP_S3_BUCKET }}
+      {{ ROOT_DATA_DIR }}/docker
+      --config {{ ansible_env.HOME }}/.config/rclone/rclone.conf
+      --log-file {{ ROOT_DATA_DIR }}/backup/rclone-restore.log
+      --log-level INFO
+      --stats-one-line

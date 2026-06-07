@@ -1,0 +1,51 @@
+# stacks/backup.yml
+
+- name: Instalar rclone si no está presente
+  ansible.builtin.shell:
+    cmd: curl https://rclone.org/install.sh | bash
+    creates: /usr/bin/rclone
+
+- name: Crear directorio de configuración rclone
+  file:
+    path: "{{ ansible_env.HOME }}/.config/rclone"
+    state: directory
+    mode: '0700'
+
+- name: Generar configuración rclone para S3 (no sobreescribir si ya existe)
+  ansible.builtin.copy:
+    dest: "{{ ansible_env.HOME }}/.config/rclone/rclone.conf"
+    force: no
+    mode: '0600'
+    content: |
+      [s3backup]
+      type = s3
+      provider = AWS
+      access_key_id = {{ AWS_ACCESS_KEY_ID }}
+      secret_access_key = {{ AWS_SECRET_ACCESS_KEY }}
+      region = {{ BACKUP_S3_REGION }}
+
+- name: Crear directorio de logs de backup
+  file:
+    path: "{{ ROOT_DATA_DIR }}/backup"
+    state: directory
+    mode: '0755'
+
+- name: Sincronizar volúmenes Docker hacia S3
+  ansible.builtin.shell:
+    cmd: >
+      /usr/bin/rclone sync
+      {{ ROOT_DATA_DIR }}/docker
+      s3backup:{{ BACKUP_S3_BUCKET }}
+      --config {{ ansible_env.HOME }}/.config/rclone/rclone.conf
+      --log-file {{ ROOT_DATA_DIR }}/backup/rclone-backup.log
+      --log-level INFO
+      --stats-one-line
+
+- name: Crear cron job de backup semanal (sábados a las 3 AM)
+  ansible.builtin.cron:
+    name: "Backup homelab a S3 via rclone"
+    minute: "0"
+    hour: "3"
+    weekday: "6"
+    user: root
+    job: "/usr/bin/ansible-playbook {{ ROOT_DATA_DIR }}/homelab-project/ansible/lab_playbook.yml --tags backup"
