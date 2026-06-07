@@ -43,10 +43,3 @@
     user: "{{ ANSIBLE_USER }}"
     key: "https://github.com/manueljesusmatus.keys"
     state: present
-
-- name: Clonar repositorio homelab
-  ansible.builtin.git:
-    repo: "{{ HOMELAB_REPO_URL }}"
-    dest: "/home/{{ ANSIBLE_USER }}/repos/personal/homelab-project"
-    accept_hostkey: true
-  become_user: "{{ ANSIBLE_USER }}"

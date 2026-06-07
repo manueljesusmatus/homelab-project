@@ -5,7 +5,6 @@ storage_fstype: ext4
 
 # GENERALES
 ANSIBLE_USER:
-HOMELAB_REPO_URL: git@github.com:manueljesusmatus/homelab-project.git
 ROOT_DATA_DIR:
 TIMEZONE:
 DOCKER_API_VERSION:
