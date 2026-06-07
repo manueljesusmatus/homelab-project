@@ -1,7 +1,6 @@
 ---
 - name: Desplegar contenedores en lab principal
   hosts: localhost
-  become: yes
   vars:
     disabled_stacks:
       - artifactory
