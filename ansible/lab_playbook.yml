@@ -9,12 +9,12 @@
       - jenkins
       - monitoreo
       - navidrome
+      - homarr
       - redis
     stacks:
       - traefik-proxy
       - watchtower
       - uptimekuma
-      - homarr
       - microbin
       - syncthing
       - portainer

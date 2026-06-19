@@ -13,8 +13,10 @@ services:
       - TRAEFIK_MAIL_CERT=${TRAEFIK_MAIL_CERT}
       - CASAOS_DOMAIN=${CASAOS_DOMAIN}
       - REDIS_DOMAIN=${REDIS_DOMAIN}
+      - PROXMOX_DOMAIN=${PROXMOX_DOMAIN}
       - TRAEFIK_CASAOS_SERVICE=${TRAEFIK_CASAOS_SERVICE}
       - TRAEFIK_REDIS_SERVICE=${TRAEFIK_REDIS_SERVICE}
+      - TRAEFIK_PROXMOX_SERVICE=${TRAEFIK_PROXMOX_SERVICE}
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "/etc/localtime:/etc/localtime:ro"
