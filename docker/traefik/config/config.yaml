@@ -14,6 +14,13 @@ http:
       service: redis
       tls:
         certResolver: cloudflare
+    proxmox:
+      rule: 'Host(`{{ env "PROXMOX_DOMAIN" }}`)'
+      entryPoints:
+        - websecure
+      service: proxmox
+      tls:
+        certResolver: cloudflare
 
   services:
     casa:
@@ -25,4 +32,9 @@ http:
       loadBalancer:
         servers:
           - url: '{{ env "TRAEFIK_REDIS_SERVICE" }}'
+        passHostHeader: true
+    proxmox:
+      loadBalancer:
+        servers:
+          - url: '{{ env "TRAEFIK_PROXMOX_SERVICE" }}'
         passHostHeader: true

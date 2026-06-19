@@ -9,26 +9,23 @@ Configuración de infraestructura homelab personal desplegado en Raspberry Pi. U
 ## Comandos principales
 
 ```bash
-# Desplegar todos los stacks (excluyendo down e init)
+# Desplegar todos los stacks activos
 sudo ansible-playbook ansible/lab_playbook.yml --verbose --skip-tags "down,init"
 
 # Solo levantar contenedores
 sudo ansible-playbook ansible/lab_playbook.yml --verbose --tags "up"
 
-# Solo configuración inicial (red Docker, directorios)
+# Solo configuración inicial (Docker, red, cgroups, CasaOS)
 sudo ansible-playbook ansible/lab_playbook.yml --verbose --tags "init"
 
 # Bajar todos los stacks
 sudo ansible-playbook ansible/lab_playbook.yml --verbose --tags "down"
 
-# Backup manual
-sudo sh backup/backup.sh
+# Backup manual a S3 (también instala rclone y crea cron semanal sabados 3 AM)
+sudo ansible-playbook ansible/lab_playbook.yml --tags "backup"
 
-# Subir backup a MEGA
-sudo sh backup/mega.sh
-
-# Restaurar desde MEGA
-sh backup/restore.sh
+# Restaurar desde S3 (requiere que rclone ya esté configurado; corre backup primero)
+sudo ansible-playbook ansible/lab_playbook.yml --tags "restore"
 ```
 
 ## Arquitectura
@@ -37,13 +34,15 @@ sh backup/restore.sh
 
 Cada servicio tiene dos componentes:
 1. `docker/<stack>/docker-compose.yml` — definición del servicio con variables de entorno
-2. `ansible/stacks/<stack>.yml` — playbook que crea volúmenes, copia configs y ejecuta el compose
+2. `ansible/stacks/<stack>.yml` — playbook que crea directorios, copia configs y ejecuta el compose
 
 El playbook principal `ansible/lab_playbook.yml` itera sobre la lista `stacks` y llama a cada `ansible/stacks/<stack>.yml`. Los stacks en `disabled_stacks` se saltan.
 
 ### Variables de configuración
 
 Todas las variables sensibles van en `ansible/group_vars/all.yml` (no versionado; plantilla en `all.example.yml`). Las variables se inyectan como `environment:` al ejecutar `community.docker.docker_compose_v2`.
+
+`ROOT_DATA_DIR` es la variable clave que apunta al directorio raíz de datos Docker (volúmenes, configs).
 
 ### Red Docker
 
@@ -64,26 +63,30 @@ Los servicios se exponen con labels de Traefik:
 
 Todos los contenedores gestionados tienen el label `com.centurylinklabs.watchtower.enable=true` para actualizaciones automáticas de imágenes.
 
-### Stacks activos
+### Stacks activos / deshabilitados
 
-| Stack | Descripción |
-|-------|-------------|
-| traefik-proxy | Reverse proxy + TLS |
-| portainer | Gestión Docker UI |
-| watchtower | Auto-updates |
-| gitea | Git self-hosted |
-| monitoreo | Prometheus + Grafana + node_exporter + cAdvisor |
-| homarr | Dashboard |
-| navidrome | Streaming de música |
-| cloudbeaver | DB manager web |
-| uptimekuma | Monitor de uptime |
-| jenkins | CI/CD |
-| microbin | Pastebin self-hosted |
-| artifactory | Registry Docker (deshabilitado) |
+| Stack | Estado | Descripción |
+|-------|--------|-------------|
+| traefik-proxy | activo | Reverse proxy + TLS |
+| watchtower | activo | Auto-updates |
+| uptimekuma | activo | Monitor de uptime |
+| homarr | activo | Dashboard |
+| microbin | activo | Pastebin self-hosted |
+| syncthing | activo | Sincronización de archivos |
+| portainer | activo | Gestión Docker UI |
+| artifactory | deshabilitado | Registry Docker |
+| cloudbeaver | deshabilitado | DB manager web |
+| gitea | deshabilitado | Git self-hosted |
+| jenkins | deshabilitado | CI/CD |
+| monitoreo | deshabilitado | Prometheus + Grafana + node_exporter + cAdvisor |
+| navidrome | deshabilitado | Streaming de música |
+| redis | deshabilitado | Cache |
+
+Para habilitar/deshabilitar un stack: moverlo entre las listas `stacks` y `disabled_stacks` en `ansible/lab_playbook.yml`.
 
 ### Backup
 
-`backup/backup.sh` comprime `~/docker/` en `~/backup/backup-YYYY-MM-DD.zip` y elimina backups >7 días. `backup/mega.sh` sube a MEGA via megatools (requiere `~/.megarc`).
+El backup usa **rclone** para sincronizar `ROOT_DATA_DIR` hacia S3 (`BACKUP_S3_BUCKET`). El tag `backup` instala rclone, genera `~/.config/rclone/rclone.conf` (no sobreescribe si existe) y crea un cron job semanal. El tag `restore` hace el sync inverso S3 → local.
 
 ## Agregar un nuevo stack
 
