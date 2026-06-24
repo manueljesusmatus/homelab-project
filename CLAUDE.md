@@ -32,11 +32,13 @@ sudo ansible-playbook ansible/lab_playbook.yml --tags "restore"
 
 ### Patrón general
 
-Cada servicio tiene dos componentes:
-1. `docker/<stack>/docker-compose.yml` — definición del servicio con variables de entorno
-2. `ansible/stacks/<stack>.yml` — playbook que crea directorios, copia configs y ejecuta el compose
+Los servicios se organizan por categoría: `infra`, `dashboard`, `monitoring`, `dev`, `media`, `data`, `tools`.
 
-El playbook principal `ansible/lab_playbook.yml` itera sobre la lista `stacks` y llama a cada `ansible/stacks/<stack>.yml`. Los stacks en `disabled_stacks` se saltan.
+Cada servicio tiene dos componentes:
+1. `docker/<categoría>/<stack>/docker-compose.yml` — definición del servicio con variables de entorno
+2. `ansible/stacks/containers/<categoría>/<stack>.yml` — playbook que crea directorios, copia configs y ejecuta el compose
+
+El playbook principal `ansible/lab_playbook.yml` itera sobre la lista `stacks` (en formato `<categoría>/<nombre>`) y llama a cada `ansible/stacks/containers/{{ item }}.yml`. Los stacks en `disabled_stacks` se saltan.
 
 ### Variables de configuración
 
@@ -65,22 +67,26 @@ Todos los contenedores gestionados tienen el label `com.centurylinklabs.watchtow
 
 ### Stacks activos / deshabilitados
 
-| Stack | Estado | Descripción |
-|-------|--------|-------------|
-| traefik-proxy | activo | Reverse proxy + TLS |
-| watchtower | activo | Auto-updates |
-| uptimekuma | activo | Monitor de uptime |
-| homarr | activo | Dashboard |
-| microbin | activo | Pastebin self-hosted |
-| syncthing | activo | Sincronización de archivos |
-| portainer | activo | Gestión Docker UI |
-| artifactory | deshabilitado | Registry Docker |
-| cloudbeaver | deshabilitado | DB manager web |
-| gitea | deshabilitado | Git self-hosted |
-| jenkins | deshabilitado | CI/CD |
-| monitoreo | deshabilitado | Prometheus + Grafana + node_exporter + cAdvisor |
-| navidrome | deshabilitado | Streaming de música |
-| redis | deshabilitado | Cache |
+| Stack | Categoría | Estado | Descripción |
+|-------|-----------|--------|-------------|
+| infra/traefik-proxy | infra | activo | Reverse proxy + TLS |
+| infra/watchtower | infra | activo | Auto-updates |
+| monitoring/uptimekuma | monitoring | activo | Monitor de uptime |
+| dashboard/glance | dashboard | activo | Dashboard |
+| dashboard/portainer | dashboard | activo | Gestión Docker UI |
+| data/syncthing | data | activo | Sincronización de archivos |
+| data/valkey | data | activo | Cache in-memory |
+| media/transmission | media | activo | Cliente torrent |
+| dev/excalidraw | dev | activo | Pizarra colaborativa |
+| tools/microbin | tools | activo | Pastebin self-hosted |
+| dashboard/homarr | dashboard | deshabilitado | Dashboard alternativo |
+| monitoring/monitoreo | monitoring | deshabilitado | Prometheus + Grafana |
+| dev/artifactory | dev | deshabilitado | Registry Docker |
+| dev/cloudbeaver | dev | deshabilitado | DB manager web |
+| dev/gitea | dev | deshabilitado | Git self-hosted |
+| dev/jenkins | dev | deshabilitado | CI/CD |
+| media/navidrome | media | deshabilitado | Streaming de música |
+| data/redis | data | deshabilitado | Cache (reemplazado por valkey) |
 
 Para habilitar/deshabilitar un stack: moverlo entre las listas `stacks` y `disabled_stacks` en `ansible/lab_playbook.yml`.
 
@@ -90,7 +96,8 @@ El backup usa **rclone** para sincronizar `ROOT_DATA_DIR` hacia S3 (`BACKUP_S3_B
 
 ## Agregar un nuevo stack
 
-1. Crear `docker/<nombre>/docker-compose.yml` con labels de Traefik y Watchtower
-2. Crear `ansible/stacks/<nombre>.yml` que cree directorios, copie configs y ejecute compose
-3. Agregar `<nombre>` a la lista `stacks` en `ansible/lab_playbook.yml`
-4. Agregar variables necesarias a `ansible/group_vars/all.example.yml` y al `all.yml` real
+1. Elegir la categoría correspondiente: `infra`, `dashboard`, `monitoring`, `dev`, `media`, `data`, `tools`
+2. Crear `docker/<categoría>/<nombre>/docker-compose.yml` con labels de Traefik y Watchtower
+3. Crear `ansible/stacks/containers/<categoría>/<nombre>.yml` que cree directorios, copie configs y ejecute compose
+4. Agregar `<categoría>/<nombre>` a la lista `stacks` en `ansible/lab_playbook.yml`
+5. Agregar variables necesarias a `ansible/group_vars/all.example.yml` y al `all.yml` real

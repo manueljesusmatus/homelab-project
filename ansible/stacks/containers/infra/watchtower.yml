@@ -1,4 +1,4 @@
-﻿# stacks/watchtower.yml
+# stacks/watchtower.yml
 
 - name: Crear directorios para volúmenes
   file:
@@ -10,7 +10,7 @@
 
 - name: Ejecutar Docker Compose
   community.docker.docker_compose_v2:
-    project_src: ../docker/watchtower
+    project_src: ../docker/infra/watchtower
     state: present
   environment:
     ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"

@@ -1,4 +1,4 @@
-﻿# stacks/jenkins.yml
+# stacks/uptimekuma.yml
 
 - name: Crear directorios para volúmenes
   file:
@@ -6,16 +6,16 @@
     state: directory
     mode: '0755'
   loop:
-    - "{{ ROOT_DATA_DIR }}/jenkins/data"
+    - "{{ ROOT_DATA_DIR }}/uptimekuma"
 
 - name: Ejecutar Docker Compose
   community.docker.docker_compose_v2:
-    project_src: ../docker/jenkins
+    project_src: ../docker/monitoring/uptimekuma
     state: present
   environment:
     ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
     TIMEZONE: "{{ TIMEZONE }}"
-    JENKINS_DOMAIN: "{{ JENKINS_DOMAIN }}"
+    UPTIMEKUMA_DOMAIN: "{{ UPTIMEKUMA_DOMAIN }}"
   register: result
 
 - name: Mostrar resultado

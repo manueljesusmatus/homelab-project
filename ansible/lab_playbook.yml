@@ -3,25 +3,25 @@
   hosts: localhost
   vars:
     disabled_stacks:
-      - artifactory
-      - cloudbeaver
-      - gitea
-      - jenkins
-      - monitoreo
-      - navidrome
-      - homarr
-      - redis
+      - dev/artifactory
+      - dev/cloudbeaver
+      - dev/gitea
+      - dev/jenkins
+      - monitoring/monitoreo
+      - media/navidrome
+      - dashboard/homarr
+      - data/redis
     stacks:
-      - excalidraw
-      - glance
-      - transmission
-      - valkey
-      - traefik-proxy
-      - watchtower
-      - uptimekuma
-      - microbin
-      - syncthing
-      - portainer
+      - infra/traefik-proxy
+      - infra/watchtower
+      - monitoring/uptimekuma
+      - dashboard/glance
+      - dashboard/portainer
+      - data/syncthing
+      - data/valkey
+      - media/transmission
+      - dev/excalidraw
+      - tools/microbin
 
   tasks:
     - name: Agregar al grupo sudoers

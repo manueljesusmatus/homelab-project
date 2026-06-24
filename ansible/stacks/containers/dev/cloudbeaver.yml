@@ -1,4 +1,4 @@
-﻿# stacks/uptimekuma.yml
+# stacks/cloudbeaver.yml
 
 - name: Crear directorios para volúmenes
   file:
@@ -6,16 +6,16 @@
     state: directory
     mode: '0755'
   loop:
-    - "{{ ROOT_DATA_DIR }}/uptimekuma"
+    - "{{ ROOT_DATA_DIR }}/cloudbeaver"
 
 - name: Ejecutar Docker Compose
   community.docker.docker_compose_v2:
-    project_src: ../docker/uptimekuma
+    project_src: ../docker/dev/cloudbeaver
     state: present
   environment:
     ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
     TIMEZONE: "{{ TIMEZONE }}"
-    UPTIMEKUMA_DOMAIN: "{{ UPTIMEKUMA_DOMAIN }}"
+    CLOUDBEAVER_DOMAIN: "{{ CLOUDBEAVER_DOMAIN }}"
   register: result
 
 - name: Mostrar resultado

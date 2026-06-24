@@ -1,4 +1,4 @@
-﻿# stacks/gitea.yml
+# stacks/redis.yml
 
 - name: Crear directorios para volúmenes
   file:
@@ -6,16 +6,16 @@
     state: directory
     mode: '0755'
   loop:
-    - "{{ ROOT_DATA_DIR }}/portainer/data"
+    - "{{ ROOT_DATA_DIR }}/redis"
 
 - name: Ejecutar Docker Compose
   community.docker.docker_compose_v2:
-    project_src: ../docker/portainer
+    project_src: ../docker/data/redis
     state: present
   environment:
     ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
     TIMEZONE: "{{ TIMEZONE }}"
-    PORTAINER_DOMAIN: "{{ PORTAINER_DOMAIN }}"
+    REDIS_DOMAIN: "{{ REDIS_DOMAIN }}"
   register: result
 
 - name: Mostrar resultado

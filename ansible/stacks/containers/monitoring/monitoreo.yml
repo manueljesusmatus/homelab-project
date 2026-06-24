@@ -1,4 +1,4 @@
-﻿# stacks/monitoreo.yml
+# stacks/monitoreo.yml
 
 - name: Crear directorios para volúmenes
   file:
@@ -11,12 +11,12 @@
 
 - name: Copiar archivos de configuración
   copy:
-    src: "../docker/monitoreo/prometheus.yml"
+    src: "../docker/monitoring/monitoreo/prometheus.yml"
     dest: "{{ ROOT_DATA_DIR }}/monitoreo/prometheus/prometheus.yml"
 
 - name: Ejecutar Docker Compose
   community.docker.docker_compose_v2:
-    project_src: ../docker/monitoreo
+    project_src: ../docker/monitoring/monitoreo
     state: present
   environment:
     ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"

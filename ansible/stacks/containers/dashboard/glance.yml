@@ -8,12 +8,12 @@
 
 - name: Copiar archivos de configuración de Glance
   copy:
-    src: "../docker/glance/data/"
+    src: "../docker/dashboard/glance/data/"
     dest: "{{ ROOT_DATA_DIR }}/glance/"
 
 - name: Ejecutar Docker Compose
   community.docker.docker_compose_v2:
-    project_src: ../docker/glance
+    project_src: ../docker/dashboard/glance
     state: present
   environment:
     ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"

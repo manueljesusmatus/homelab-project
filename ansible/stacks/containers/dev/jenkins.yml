@@ -1,4 +1,4 @@
-﻿# stacks/syncthing.yml
+# stacks/jenkins.yml
 
 - name: Crear directorios para volúmenes
   file:
@@ -6,17 +6,16 @@
     state: directory
     mode: '0755'
   loop:
-    - "{{ ROOT_DATA_DIR }}/syncthing/config"
+    - "{{ ROOT_DATA_DIR }}/jenkins/data"
 
 - name: Ejecutar Docker Compose
   community.docker.docker_compose_v2:
-    project_src: ../docker/syncthing
+    project_src: ../docker/dev/jenkins
     state: present
   environment:
     ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
     TIMEZONE: "{{ TIMEZONE }}"
-    SYNCTHING_DOMAIN: "{{ SYNCTHING_DOMAIN }}"
-    SYNCTHING_DATA_DIR: "{{ SYNCTHING_DATA_DIR }}"
+    JENKINS_DOMAIN: "{{ JENKINS_DOMAIN }}"
   register: result
 
 - name: Mostrar resultado

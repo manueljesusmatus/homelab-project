@@ -1,8 +1,8 @@
-﻿# stacks/microbin.yml
+# stacks/microbin.yml
 
 - name: Ejecutar Docker Compose
   community.docker.docker_compose_v2:
-    project_src: ../docker/microbin
+    project_src: ../docker/tools/microbin
     state: present
   environment:
     TIMEZONE: "{{ TIMEZONE }}"

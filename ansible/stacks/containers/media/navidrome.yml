@@ -1,4 +1,4 @@
-﻿# stacks/cloudbeaver.yml
+# stacks/navidrome.yml
 
 - name: Crear directorios para volúmenes
   file:
@@ -6,16 +6,17 @@
     state: directory
     mode: '0755'
   loop:
-    - "{{ ROOT_DATA_DIR }}/cloudbeaver"
+    - "{{ ROOT_DATA_DIR }}/navidrome/music"
+    - "{{ ROOT_DATA_DIR }}/navidrome/data"
 
 - name: Ejecutar Docker Compose
   community.docker.docker_compose_v2:
-    project_src: ../docker/cloudbeaver
+    project_src: ../docker/media/navidrome
     state: present
   environment:
     ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
     TIMEZONE: "{{ TIMEZONE }}"
-    CLOUDBEAVER_DOMAIN: "{{ CLOUDBEAVER_DOMAIN }}"
+    NAVIDROME_DOMAIN: "{{ NAVIDROME_DOMAIN }}"
   register: result
 
 - name: Mostrar resultado

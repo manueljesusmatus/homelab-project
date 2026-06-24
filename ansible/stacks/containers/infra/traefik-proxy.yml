@@ -1,4 +1,4 @@
-﻿# stacks/traefik.yml
+# stacks/traefik.yml
 
 - name: Crear directorios para volúmenes
   file:
@@ -11,7 +11,7 @@
 
 - name: Copiar archivos de configuración
   copy:
-    src: "../docker/traefik/config/{{ item }}"
+    src: "../docker/infra/traefik/config/{{ item }}"
     dest: "{{ ROOT_DATA_DIR }}/traefik/config/{{ item }}"
   loop:
     - traefik.yaml
@@ -19,7 +19,7 @@
 
 - name: Ejecutar Docker Compose
   community.docker.docker_compose_v2:
-    project_src: ../docker/traefik
+    project_src: ../docker/infra/traefik
     state: present
   environment:
     ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"

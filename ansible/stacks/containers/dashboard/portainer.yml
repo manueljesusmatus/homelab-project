@@ -1,4 +1,4 @@
-﻿# stacks/navidrome.yml
+# stacks/gitea.yml
 
 - name: Crear directorios para volúmenes
   file:
@@ -6,17 +6,16 @@
     state: directory
     mode: '0755'
   loop:
-    - "{{ ROOT_DATA_DIR }}/navidrome/music"
-    - "{{ ROOT_DATA_DIR }}/navidrome/data"
+    - "{{ ROOT_DATA_DIR }}/portainer/data"
 
 - name: Ejecutar Docker Compose
   community.docker.docker_compose_v2:
-    project_src: ../docker/navidrome
+    project_src: ../docker/dashboard/portainer
     state: present
   environment:
     ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
     TIMEZONE: "{{ TIMEZONE }}"
-    NAVIDROME_DOMAIN: "{{ NAVIDROME_DOMAIN }}"
+    PORTAINER_DOMAIN: "{{ PORTAINER_DOMAIN }}"
   register: result
 
 - name: Mostrar resultado

@@ -2,7 +2,7 @@
 
 - name: Ejecutar Docker Compose
   community.docker.docker_compose_v2:
-    project_src: ../docker/excalidraw
+    project_src: ../docker/dev/excalidraw
     state: present
   environment:
     TIMEZONE: "{{ TIMEZONE }}"
