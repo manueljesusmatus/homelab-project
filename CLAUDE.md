@@ -4,31 +4,47 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repositorio
 
-Configuración de infraestructura homelab personal desplegado en Raspberry Pi. Usa Ansible para orquestar stacks de Docker Compose.
+Configuración de infraestructura homelab personal desplegado en Raspberry Pi y VMs Linux. Usa Ansible para orquestar stacks de Docker Compose.
 
 ## Comandos principales
 
 ```bash
-# Desplegar todos los stacks activos
-sudo ansible-playbook ansible/lab_playbook.yml --verbose --skip-tags "down,init"
+# Inicializar Raspberry Pi (docker + config + ssh + m2 + casaos + cgroups)
+ansible-playbook ansible/lab_playbook.yml --tags "raspberry" --ask-become-pass
 
-# Solo levantar contenedores
-sudo ansible-playbook ansible/lab_playbook.yml --verbose --tags "up"
+# Inicializar VM Linux (docker + config)
+ansible-playbook ansible/lab_playbook.yml --tags "linux-vm" --ask-become-pass
 
-# Solo configuración inicial (Docker, red, cgroups, CasaOS)
-sudo ansible-playbook ansible/lab_playbook.yml --verbose --tags "init"
+# Levantar todos los stacks activos
+ansible-playbook ansible/lab_playbook.yml --tags "containers_up"
 
 # Bajar todos los stacks
-sudo ansible-playbook ansible/lab_playbook.yml --verbose --tags "down"
+ansible-playbook ansible/lab_playbook.yml --tags "containers_down"
 
-# Backup manual a S3 (también instala rclone y crea cron semanal sabados 3 AM)
-sudo ansible-playbook ansible/lab_playbook.yml --tags "backup"
+# Backup a S3 (instala rclone, crea cron semanal sábados 3 AM)
+ansible-playbook ansible/lab_playbook.yml --tags "containers_backup" --ask-become-pass
 
-# Restaurar desde S3 (requiere que rclone ya esté configurado; corre backup primero)
-sudo ansible-playbook ansible/lab_playbook.yml --tags "restore"
+# Restaurar desde S3 (requiere que rclone ya esté configurado)
+ansible-playbook ansible/lab_playbook.yml --tags "containers_restore" --ask-become-pass
+
+# Tags granulares
+# --tags "docker"   → instala Docker y crea red traefik_net
+# --tags "config"   → alias git + directorios base
+# --tags "ssh"      → añade clave pública desde GitHub (solo raspberry)
+# --tags "m2"       → monta disco M.2 por UUID (solo raspberry)
+# --tags "casaos"   → instala CasaOS (solo raspberry)
 ```
 
 ## Arquitectura
+
+### Plataformas soportadas
+
+| Tag | Plataforma | Tasks incluidas |
+|-----|-----------|----------------|
+| `raspberry` | Raspberry Pi | `docker` + `config` + `ssh` + `m2` + `casaos` + `mem_issue` |
+| `linux-vm` | VM Linux genérica | `docker` + `config` |
+
+Las tasks `ssh`, `m2`, `casaos` y `mem_issue` solo aplican a Raspberry Pi.
 
 ### Patrón general
 
@@ -92,7 +108,7 @@ Para habilitar/deshabilitar un stack: moverlo entre las listas `stacks` y `disab
 
 ### Backup
 
-El backup usa **rclone** para sincronizar `ROOT_DATA_DIR` hacia S3 (`BACKUP_S3_BUCKET`). El tag `backup` instala rclone, genera `~/.config/rclone/rclone.conf` (no sobreescribe si existe) y crea un cron job semanal. El tag `restore` hace el sync inverso S3 → local.
+El backup usa **rclone** para sincronizar `ROOT_DATA_DIR` hacia S3 (`BACKUP_S3_BUCKET`). El tag `containers_backup` instala rclone, genera `~/.config/rclone/rclone.conf` (no sobreescribe si existe) y crea un cron job semanal. El tag `containers_restore` hace el sync inverso S3 → local.
 
 ## Agregar un nuevo stack
 

@@ -1,0 +1,7 @@
+# stacks/ssh.yml
+
+- name: Añadir clave pública SSH
+  ansible.posix.authorized_key:
+    user: "{{ ANSIBLE_USER }}"
+    key: "https://github.com/manueljesusmatus.keys"
+    state: present

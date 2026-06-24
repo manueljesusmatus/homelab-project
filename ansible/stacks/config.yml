@@ -4,30 +4,6 @@
   ansible.builtin.script: 
     cmd: ../docker/gitea/git/alias.sh
 
-- name: Crear red Docker traefik_net
-  become: yes
-  community.docker.docker_network:
-    name: traefik_net
-    state: present
-    ipam_config:
-      - subnet: 172.21.0.0/24
-
-- name: Crear directorio de montaje M.2
-  become: yes
-  file:
-    path: "{{ storage_mountpoint }}"
-    state: directory
-    mode: '0755'
-
-- name: Montar dispositivo M.2 por UUID
-  become: yes
-  ansible.posix.mount:
-    path: "{{ storage_mountpoint }}"
-    src: "UUID={{ storage_uuid }}"
-    fstype: "{{ storage_fstype }}"
-    opts: defaults
-    state: mounted
-
 - name: Crear directorios base
   file:
     path: "{{ item }}"
@@ -40,9 +16,3 @@
     - "~/repos/personal"
     - "~/docker"
     - "~/documents"
-
-- name: Añadir clave pública SSH
-  ansible.posix.authorized_key:
-    user: "{{ ANSIBLE_USER }}"
-    key: "https://github.com/manueljesusmatus.keys"
-    state: present
