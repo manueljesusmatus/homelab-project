@@ -1,0 +1,36 @@
+﻿# stacks/traefik.yml
+
+- name: Crear directorios para volúmenes
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ ROOT_DATA_DIR }}/traefik/letsencrypt"
+    - "{{ ROOT_DATA_DIR }}/traefik/config"
+
+- name: Copiar archivos de configuración
+  copy:
+    src: "../docker/traefik/config/{{ item }}"
+    dest: "{{ ROOT_DATA_DIR }}/traefik/config/{{ item }}"
+  loop:
+    - traefik.yaml
+    - config.yaml
+
+- name: Ejecutar Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: ../docker/traefik
+    state: present
+  environment:
+    ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
+    TRAEFIK_CLOUDFLARE_DNS_API_TOKEN: "{{ TRAEFIK_CLOUDFLARE_DNS_API_TOKEN }}"
+    TRAEFIK_MAIL_CERT: "{{ TRAEFIK_MAIL_CERT }}"
+    TRAEFIK_DOMAIN: "{{ TRAEFIK_DOMAIN }}"
+    CASAOS_DOMAIN: "{{ CASAOS_DOMAIN }}"
+    REDIS_DOMAIN: "{{ REDIS_DOMAIN }}"
+    TRAEFIK_CASAOS_SERVICE: "{{ TRAEFIK_CASAOS_SERVICE }}"
+    TRAEFIK_REDIS_SERVICE: "{{ TRAEFIK_REDIS_SERVICE }}"
+  register: result
+
+- name: Mostrar resultado
+  include_tasks: _show_result.yml

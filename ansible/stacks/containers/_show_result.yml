@@ -1,0 +1,13 @@
+- name: Sin cambios
+  debug:
+    msg: "Sin cambios - servicios ya activos"
+  when: not result.changed
+
+- name: Cambios aplicados
+  debug:
+    msg: |
+      Cambios:
+      {% for action in result.actions %}
+        - {{ action.name }}: {{ action.action }}
+      {% endfor %}
+  when: result.changed

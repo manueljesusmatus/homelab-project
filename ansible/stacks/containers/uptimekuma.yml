@@ -1,4 +1,4 @@
-# stacks/syncthing.yml
+﻿# stacks/uptimekuma.yml
 
 - name: Crear directorios para volúmenes
   file:
@@ -6,19 +6,17 @@
     state: directory
     mode: '0755'
   loop:
-    - "{{ ROOT_DATA_DIR }}/syncthing/config"
+    - "{{ ROOT_DATA_DIR }}/uptimekuma"
 
 - name: Ejecutar Docker Compose
   community.docker.docker_compose_v2:
-    project_src: ../docker/syncthing
+    project_src: ../docker/uptimekuma
     state: present
   environment:
     ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
     TIMEZONE: "{{ TIMEZONE }}"
-    SYNCTHING_DOMAIN: "{{ SYNCTHING_DOMAIN }}"
-    SYNCTHING_DATA_DIR: "{{ SYNCTHING_DATA_DIR }}"
+    UPTIMEKUMA_DOMAIN: "{{ UPTIMEKUMA_DOMAIN }}"
   register: result
 
 - name: Mostrar resultado
-  debug:
-    msg: "{{ result }}"
+  include_tasks: _show_result.yml

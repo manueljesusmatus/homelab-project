@@ -41,5 +41,4 @@
   register: result
 
 - name: Mostrar resultado
-  debug:
-    msg: "{{ result }}"
+  include_tasks: _show_result.yml

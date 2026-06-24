@@ -1,23 +1,19 @@
-# stacks/jenkins.yml
+# stacks/valkey.yml
 
-- name: Crear directorios para volúmenes
+- name: Crear directorio de datos de Valkey
   file:
-    path: "{{ item }}"
+    path: "{{ ROOT_DATA_DIR }}/valkey/data"
     state: directory
     mode: '0755'
-  loop:
-    - "{{ ROOT_DATA_DIR }}/jenkins/data"
 
 - name: Ejecutar Docker Compose
   community.docker.docker_compose_v2:
-    project_src: ../docker/jenkins
+    project_src: ../docker/valkey
     state: present
   environment:
     ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
     TIMEZONE: "{{ TIMEZONE }}"
-    JENKINS_DOMAIN: "{{ JENKINS_DOMAIN }}"
   register: result
 
 - name: Mostrar resultado
-  debug:
-    msg: "{{ result }}"
+  include_tasks: _show_result.yml

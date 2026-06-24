@@ -1,0 +1,50 @@
+﻿# stacks/gitea.yml
+
+- name: Crear directorios para volúmenes
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ ROOT_DATA_DIR }}/gitea/db"
+    - "{{ ROOT_DATA_DIR }}/gitea/data"
+
+- name: Ejecutar Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: ../docker/gitea
+    state: present
+  environment:
+    ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
+    TIMEZONE: "{{ TIMEZONE }}"
+    GITEA_DB: "{{ GITEA_DB }}"
+    GITEA_USER: "{{ GITEA_USER }}"
+    GITEA_PASSWORD: "{{ GITEA_PASSWORD }}"
+    GITEA_URL: "{{ GITEA_URL }}"
+    GITEA_DOMAIN: "{{ GITEA_DOMAIN }}"
+    GITEA_EMAIL_ADDR: "{{ GITEA_EMAIL_ADDR }}"
+    GITEA_EMAIL_PORT: "{{ GITEA_EMAIL_PORT }}"
+    GITEA_EMAIL_FROM: "{{ GITEA_EMAIL_FROM }}"
+    GITEA_EMAIL_USER: "{{ GITEA_EMAIL_USER }}"
+    GITEA_EMAIL_PASSWORD: "{{ GITEA_EMAIL_PASSWORD }}"
+  register: result
+
+- name: Mostrar resultado
+  include_tasks: _show_result.yml
+
+- name: Asegurar permisos de ejecución para backup.sh
+  ansible.builtin.file:
+    path: ../docker/gitea/git/backup.sh
+    mode: '0755'
+
+- name: Ejecutar script post despliegue
+  ansible.builtin.shell: ./backup.sh
+  args:
+    chdir: ../docker/gitea/git
+
+- name: Crear tarea cron para ejecutar backup.sh cada 10 minutos
+  ansible.builtin.cron:
+    name: "Backup de Gitea a las 3 AM"
+    minute: "0"
+    hour: "3"
+    job: "cd {{ playbook_dir }}/../docker/gitea/git && ./backup.sh"
+    user: "{{ ANSIBLE_USER }}"

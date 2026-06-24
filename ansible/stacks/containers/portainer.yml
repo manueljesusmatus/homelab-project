@@ -1,4 +1,4 @@
-# stacks/uptimekuma.yml
+﻿# stacks/gitea.yml
 
 - name: Crear directorios para volúmenes
   file:
@@ -6,18 +6,17 @@
     state: directory
     mode: '0755'
   loop:
-    - "{{ ROOT_DATA_DIR }}/uptimekuma"
+    - "{{ ROOT_DATA_DIR }}/portainer/data"
 
 - name: Ejecutar Docker Compose
   community.docker.docker_compose_v2:
-    project_src: ../docker/uptimekuma
+    project_src: ../docker/portainer
     state: present
   environment:
     ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
     TIMEZONE: "{{ TIMEZONE }}"
-    UPTIMEKUMA_DOMAIN: "{{ UPTIMEKUMA_DOMAIN }}"
+    PORTAINER_DOMAIN: "{{ PORTAINER_DOMAIN }}"
   register: result
 
 - name: Mostrar resultado
-  debug:
-    msg: "{{ result }}"
+  include_tasks: _show_result.yml

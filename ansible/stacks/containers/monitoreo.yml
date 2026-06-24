@@ -1,0 +1,31 @@
+﻿# stacks/monitoreo.yml
+
+- name: Crear directorios para volúmenes
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ ROOT_DATA_DIR }}/monitoreo/prometheus"
+    - "{{ ROOT_DATA_DIR }}/monitoreo/grafana"
+
+- name: Copiar archivos de configuración
+  copy:
+    src: "../docker/monitoreo/prometheus.yml"
+    dest: "{{ ROOT_DATA_DIR }}/monitoreo/prometheus/prometheus.yml"
+
+- name: Ejecutar Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: ../docker/monitoreo
+    state: present
+  environment:
+    ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
+    TIMEZONE: "{{ TIMEZONE }}"
+    GRAFANA_ADMIN_USER: "{{ GRAFANA_ADMIN_USER }}"
+    GRAFANA_ADMIN_PASSWORD: "{{ GRAFANA_ADMIN_PASSWORD }}"
+    GRAFANA_DOMAIN: "{{ GRAFANA_DOMAIN }}"
+    PROMETHEUS_DOMAIN: "{{ PROMETHEUS_DOMAIN }}"
+  register: result
+
+- name: Mostrar resultado
+  include_tasks: _show_result.yml
