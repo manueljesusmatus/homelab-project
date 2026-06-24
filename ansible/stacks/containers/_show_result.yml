@@ -8,6 +8,6 @@
     msg: |
       Cambios:
       {% for action in result.actions %}
-        - {{ action.name }}: {{ action.action }}
+        - {{ action.id }}: {{ action.status }} {{ action.what }}
       {% endfor %}
   when: result.changed
