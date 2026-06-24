@@ -17,6 +17,10 @@ services:
       - "traefik.http.routers.uptimekuma.entrypoints=websecure"
       - "traefik.http.routers.uptimekuma.tls.certresolver=cloudflare"
       - "traefik.http.services.uptimekuma.loadbalancer.server.port=3001"
+      # GLANCE
+      - "glance.name=uptime-kuma"
+      - "glance.icon=di:uptime-kuma"
+      - "glance.url=https://${UPTIMEKUMA_DOMAIN}"
     networks:
       - traefik_net
 

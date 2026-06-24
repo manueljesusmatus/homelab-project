@@ -70,6 +70,10 @@ services:
       - "traefik.http.routers.gitea.entrypoints=websecure"
       - "traefik.http.routers.gitea.tls.certresolver=cloudflare"
       - "traefik.http.services.gitea.loadbalancer.server.port=3000"
+      # GLANCE
+      - "glance.name=gitea"
+      - "glance.icon=di:gitea"
+      - "glance.url=https://${GITEA_DOMAIN}"
     networks:
       - traefik_net
     depends_on:

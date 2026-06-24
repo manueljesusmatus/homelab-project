@@ -21,6 +21,10 @@ services:
       - "traefik.http.routers.transmission.entrypoints=websecure"
       - "traefik.http.routers.transmission.tls.certresolver=cloudflare"
       - "traefik.http.services.transmission.loadbalancer.server.port=9091"
+      # GLANCE
+      - "glance.name=transmission"
+      - "glance.icon=di:transmission"
+      - "glance.url=https://${TRANSMISSION_DOMAIN}"
     networks:
       - traefik_net
     restart: unless-stopped

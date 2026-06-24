@@ -20,6 +20,10 @@ services:
       - "traefik.http.routers.homarr.entrypoints=websecure"
       - "traefik.http.routers.homarr.tls.certresolver=cloudflare"
       - "traefik.http.services.homarr.loadbalancer.server.port=7575"
+      # GLANCE
+      - "glance.name=homarr"
+      - "glance.icon=di:homarr"
+      - "glance.url=https://${HOMARR_DOMAIN}"
     networks:
       - traefik_net
 

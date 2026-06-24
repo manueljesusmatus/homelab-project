@@ -15,6 +15,10 @@ services:
       - "traefik.http.routers.cloudbeaver.entrypoints=websecure"
       - "traefik.http.routers.cloudbeaver.tls.certresolver=cloudflare"
       - "traefik.http.services.cloudbeaver.loadbalancer.server.port=8978"
+      # GLANCE
+      - "glance.name=cloudbeaver"
+      - "glance.icon=di:cloudbeaver"
+      - "glance.url=https://${CLOUDBEAVER_DOMAIN}"
     networks:
       - traefik_net
     restart: unless-stopped

@@ -17,6 +17,10 @@ services:
       - "traefik.http.routers.jenkins.entrypoints=websecure"
       - "traefik.http.routers.jenkins.tls.certresolver=cloudflare"
       - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
+      # GLANCE
+      - "glance.name=jenkins"
+      - "glance.icon=di:jenkins"
+      - "glance.url=https://${JENKINS_DOMAIN}"
     networks:
       - traefik_net
     restart: unless-stopped

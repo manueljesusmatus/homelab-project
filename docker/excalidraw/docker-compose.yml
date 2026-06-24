@@ -11,6 +11,10 @@ services:
       - "traefik.http.routers.excalidraw.entrypoints=websecure"
       - "traefik.http.routers.excalidraw.tls.certresolver=cloudflare"
       - "traefik.http.services.excalidraw.loadbalancer.server.port=80"
+      # GLANCE
+      - "glance.name=excalidraw"
+      - "glance.icon=di:excalidraw"
+      - "glance.url=https://${EXCALIDRAW_DOMAIN}"
     networks:
       - traefik_net
     restart: unless-stopped

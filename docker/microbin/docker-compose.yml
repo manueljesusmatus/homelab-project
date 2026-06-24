@@ -21,6 +21,10 @@ services:
       - "traefik.http.routers.microbin.entrypoints=websecure"
       - "traefik.http.routers.microbin.tls.certresolver=cloudflare"
       - "traefik.http.services.microbin.loadbalancer.server.port=8080"
+      # GLANCE
+      - "glance.name=microbin"
+      - "glance.icon=di:microbin"
+      - "glance.url=https://${MICROBIN_DOMAIN}"
     restart: unless-stopped
     networks:
       - traefik_net

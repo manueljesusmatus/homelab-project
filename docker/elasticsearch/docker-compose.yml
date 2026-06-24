@@ -10,6 +10,9 @@ services:
     labels:
       # WATCHTOWER
       - com.centurylinklabs.watchtower.enable=true
+      # GLANCE
+      - "glance.name=elasticsearch"
+      - "glance.icon=di:elasticsearch"
     ulimits:
       memlock:
         soft: -1
@@ -30,6 +33,9 @@ services:
     labels:
       # WATCHTOWER
       - com.centurylinklabs.watchtower.enable=true
+      # GLANCE
+      - "glance.name=kibana"
+      - "glance.icon=di:kibana"
     ports:
       - "5601:5601"
     depends_on:

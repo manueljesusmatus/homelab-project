@@ -17,6 +17,9 @@ services:
     labels:
       # WATCHTOWER
       - com.centurylinklabs.watchtower.enable=true
+      # GLANCE
+      - "glance.name=nginx-proxy-manager"
+      - "glance.icon=di:nginx-proxy-manager"
     volumes:
       - ${ROOT_DATA_DIR}/nginxproxymanager/data:/data
       - ${ROOT_DATA_DIR}/nginxproxymanager/letsencrypt:/etc/letsencrypt

@@ -10,6 +10,9 @@ services:
       - "6379:6379"
     labels:
       - com.centurylinklabs.watchtower.enable=true
+      # GLANCE
+      - "glance.name=valkey"
+      - "glance.icon=di:valkey"
     networks:
       - traefik_net
     restart: unless-stopped

@@ -32,6 +32,10 @@ services:
       - "traefik.http.routers.traefik-ui.entrypoints=websecure"
       - "traefik.http.routers.traefik-ui.tls.certresolver=cloudflare"
       - "traefik.http.services.traefik-ui.loadbalancer.server.port=8080"
+      # GLANCE
+      - "glance.name=traefik"
+      - "glance.icon=di:traefik"
+      - "glance.url=https://${TRAEFIK_DOMAIN}"
     networks:
       - traefik_net
     restart: unless-stopped

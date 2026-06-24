@@ -20,6 +20,10 @@ services:
       - "traefik.http.routers.redis.entrypoints=websecure"
       - "traefik.http.routers.redis.tls.certresolver=cloudflare"
       - "traefik.http.services.redis.loadbalancer.server.port=5540"
+      # GLANCE
+      - "glance.name=redis"
+      - "glance.icon=di:redis"
+      - "glance.url=https://${REDIS_DOMAIN}"
 
 networks:
   traefik_net:

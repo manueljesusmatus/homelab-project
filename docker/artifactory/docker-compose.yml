@@ -58,6 +58,10 @@ services:
       - "traefik.http.routers.artifactory.entrypoints=websecure"
       - "traefik.http.routers.artifactory.tls.certresolver=cloudflare"
       - "traefik.http.services.artifactory.loadbalancer.server.port=${JF_ROUTER_ENTRYPOINTS_EXTERNALPORT}"
+      # GLANCE
+      - "glance.name=artifactory"
+      - "glance.icon=di:artifactory"
+      - "glance.url=https://${ARTIFACTORY_DOMAIN}"
     networks:
       - traefik_net
 

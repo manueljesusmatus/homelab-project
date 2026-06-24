@@ -16,6 +16,10 @@ services:
       - "traefik.http.routers.navidrome.entrypoints=websecure"
       - "traefik.http.routers.navidrome.tls.certresolver=cloudflare"
       - "traefik.http.services.navidrome.loadbalancer.server.port=4533"
+      # GLANCE
+      - "glance.name=navidrome"
+      - "glance.icon=di:navidrome"
+      - "glance.url=https://${NAVIDROME_DOMAIN}"
     networks:
       - traefik_net
     restart: unless-stopped

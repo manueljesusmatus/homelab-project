@@ -17,6 +17,10 @@ services:
       - "traefik.http.routers.portainer.entrypoints=websecure"
       - "traefik.http.routers.portainer.tls.certresolver=cloudflare"
       - "traefik.http.services.portainer.loadbalancer.server.port=9000"
+      # GLANCE
+      - "glance.name=portainer"
+      - "glance.icon=di:portainer"
+      - "glance.url=https://${PORTAINER_DOMAIN}"
     networks:
       - traefik_net
       

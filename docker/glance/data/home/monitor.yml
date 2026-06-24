@@ -7,5 +7,5 @@
       url: https://casa.qa1.lab.mmatush.cl
       icon: di:casaos
     - title: proxmox
-      url: http://192.168.1.50:8006/
+      url: https://proxmox.qa1.lab.mmatush.cl
       icon: di:proxmox

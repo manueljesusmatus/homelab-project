@@ -41,6 +41,10 @@ services:
       - "traefik.http.routers.watchtower.entrypoints=websecure"
       - "traefik.http.routers.watchtower.tls.certresolver=cloudflare"
       - "traefik.http.services.watchtower.loadbalancer.server.port=8080"
+      # GLANCE
+      - "glance.name=watchtower"
+      - "glance.icon=di:watchtower"
+      - "glance.url=https://${WATCHTOWER_DOMAIN}"
     networks:
       - traefik_net
     restart: unless-stopped

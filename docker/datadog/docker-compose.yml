@@ -11,6 +11,9 @@ services:
     labels:
       # WATCHTOWER
       - com.centurylinklabs.watchtower.enable=true
+      # GLANCE
+      - "glance.name=datadog"
+      - "glance.icon=di:datadog"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
