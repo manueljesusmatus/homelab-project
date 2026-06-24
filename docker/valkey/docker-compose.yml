@@ -1,0 +1,19 @@
+services:
+  valkey:
+    image: valkey/valkey:8-bookworm
+    container_name: valkey
+    volumes:
+      - ${ROOT_DATA_DIR}/valkey/data:/data
+    environment:
+      - TZ=${TIMEZONE}
+    ports:
+      - "6379:6379"
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+    networks:
+      - traefik_net
+    restart: unless-stopped
+
+networks:
+  traefik_net:
+    external: true

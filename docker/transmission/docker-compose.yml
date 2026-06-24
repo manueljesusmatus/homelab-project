@@ -1,0 +1,30 @@
+services:
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission
+    volumes:
+      - ${ROOT_DATA_DIR}/transmission/config:/config
+      - ${DOWNLOADS_DIR}/transmission:/downloads
+    environment:
+      - TZ=${TIMEZONE}
+      - PUID=1000
+      - PGID=1000
+      - USER=${TRANSMISSION_USER}
+      - PASS=${TRANSMISSION_PASS}
+    ports:
+      - "51413:51413"
+      - "51413:51413/udp"
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - "traefik.enable=true"
+      - "traefik.http.routers.transmission.rule=Host(`${TRANSMISSION_DOMAIN}`)"
+      - "traefik.http.routers.transmission.entrypoints=websecure"
+      - "traefik.http.routers.transmission.tls.certresolver=cloudflare"
+      - "traefik.http.services.transmission.loadbalancer.server.port=9091"
+    networks:
+      - traefik_net
+    restart: unless-stopped
+
+networks:
+  traefik_net:
+    external: true

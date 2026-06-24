@@ -1,0 +1,26 @@
+# stacks/glance.yml
+
+- name: Crear directorio para datos de Glance
+  file:
+    path: "{{ ROOT_DATA_DIR }}/glance"
+    state: directory
+    mode: '0755'
+
+- name: Copiar archivos de configuración de Glance
+  copy:
+    src: "../docker/glance/data/"
+    dest: "{{ ROOT_DATA_DIR }}/glance/"
+
+- name: Ejecutar Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: ../docker/glance
+    state: present
+  environment:
+    ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
+    TIMEZONE: "{{ TIMEZONE }}"
+    GLANCE_DOMAIN: "{{ GLANCE_DOMAIN }}"
+  register: result
+
+- name: Mostrar resultado
+  debug:
+    msg: "{{ result }}"

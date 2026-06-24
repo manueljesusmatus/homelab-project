@@ -1,0 +1,75 @@
+branding:
+  hide-footer: true
+  app-name: "homelab"
+
+server:
+  proxied: true
+
+theme:
+  background-color: 50 1 6
+  primary-color: 24 97 58
+  negative-color: 209 88 54
+  disable-picker: true
+
+pages:
+  - name: Home
+    show-mobile-header: true
+    columns:
+      - size: full
+        widgets:
+          - type: group
+            widgets:
+              - $include: home/docker.yml
+              - type: hacker-news
+                limit: 10
+                collapse-after: 4
+              - type: lobsters
+                limit: 10
+                collapse-after: 4
+
+          - type: group
+            widgets:
+              - type: reddit
+                subreddit: yo_ctm
+                show-thumbnails: true
+              - type: reddit
+                subreddit: selfhosted
+                show-thumbnails: true
+              - type: reddit
+                subreddit: chileIT
+                show-thumbnails: true
+              - type: reddit
+                subreddit: ObsidianMD
+                show-thumbnails: true
+      - size: small
+        widgets:
+          - $include: home/bookmarks.yml
+          - $include: home/monitor.yml
+  - name: Media
+    show-mobile-header: true
+    columns:
+      - size: full
+        widgets:
+          - type: group
+            title: Noticias
+            widgets:
+            - type: rss
+              title: La Tercera
+              style: detailed-list
+              collapse-after: 4
+              cache: 2h
+              feeds:
+                - url: https://www.latercera.com/arc/outboundfeeds/rss/?outputType=xml
+                  title: La Tercera
+            - type: rss
+              title: Cooperativa
+              style: detailed-list
+              collapse-after: 4
+              cache: 2h
+              feeds:
+                - url: https://www.cooperativa.cl/noticias/site/tax/port/all/rss_3___1.xml
+                  title: Cooperativa
+
+      - size: small
+        widgets:
+          - $include: media/media.yml

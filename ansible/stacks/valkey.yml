@@ -1,0 +1,20 @@
+# stacks/valkey.yml
+
+- name: Crear directorio de datos de Valkey
+  file:
+    path: "{{ ROOT_DATA_DIR }}/valkey/data"
+    state: directory
+    mode: '0755'
+
+- name: Ejecutar Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: ../docker/valkey
+    state: present
+  environment:
+    ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
+    TIMEZONE: "{{ TIMEZONE }}"
+  register: result
+
+- name: Mostrar resultado
+  debug:
+    msg: "{{ result }}"

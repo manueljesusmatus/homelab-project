@@ -12,6 +12,10 @@
       - homarr
       - redis
     stacks:
+      - excalidraw
+      - glance
+      - transmission
+      - valkey
       - traefik-proxy
       - watchtower
       - uptimekuma

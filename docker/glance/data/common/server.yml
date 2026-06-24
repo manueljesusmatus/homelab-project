@@ -1,0 +1,6 @@
+- type: server-stats
+  servers:
+    - type: local
+      name: Services
+      hide-swaps: true
+      hide-mountpoints-by-default: true

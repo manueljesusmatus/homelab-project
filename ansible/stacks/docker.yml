@@ -1,6 +1,7 @@
 # stacks/docker.yml
 
 - name: Instalar Docker si no está presente
+  become: yes
   ansible.builtin.shell:
     cmd: curl -fsSL https://get.docker.com | sh
     creates: /usr/bin/docker

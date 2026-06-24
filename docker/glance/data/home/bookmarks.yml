@@ -1,0 +1,39 @@
+- type: bookmarks
+  groups:
+    - title: Github
+      # hsl color code
+      color: 100 0 100
+      links:
+        - title: homelab-project
+          icon: di:github-light
+          url: https://github.com/manueljesusmatus/homelab-project
+        - title: win11debloat
+          icon: di:github-light
+          url: https://github.com/raphire/win11debloat
+        - title: windows-dev-config
+          icon: di:github-light
+          url: https://github.com/microsoft/WindowsDeveloperConfig
+    - title: Docs
+      color: 60 100 80
+      links:
+        - title: ansible docs
+          icon: di:ansible
+          url: https://docs.ansible.com/projects/ansible/latest/collections/index.html
+        - title: glance docs
+          icon: di:glance
+          url: https://github.com/glanceapp/glance/blob/main/docs/configuration.md
+        - title: community-scripts pve
+          icon: di:proxmox
+          url: https://community-scripts.org/
+    - title: Tools
+      color: 10 70 50
+      links:
+        - title: dashboard icons
+          icon: di:dashboard-icons-dark
+          url: https://dashboardicons.com/
+        - title: Ubuntu cli cheat-sheet
+          icon: sh:ubuntu
+          url: https://assets.ubuntu.com/v1/d00791ae-ubuntu_cli_cheat_sheet_2025.pdf
+        - title: 1password
+          icon: di:1password
+          url: https://my.1password.com/home

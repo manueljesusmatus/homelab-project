@@ -1,0 +1,30 @@
+# stacks/transmission.yml
+
+- name: Crear directorio de config de Transmission
+  file:
+    path: "{{ ROOT_DATA_DIR }}/transmission/config"
+    state: directory
+    mode: '0755'
+
+- name: Crear directorio de descargas de Transmission
+  file:
+    path: "{{ DOWNLOADS_DIR }}/transmission"
+    state: directory
+    mode: '0755'
+
+- name: Ejecutar Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: ../docker/transmission
+    state: present
+  environment:
+    ROOT_DATA_DIR: "{{ ROOT_DATA_DIR }}"
+    DOWNLOADS_DIR: "{{ DOWNLOADS_DIR }}"
+    TIMEZONE: "{{ TIMEZONE }}"
+    TRANSMISSION_USER: "{{ TRANSMISSION_USER }}"
+    TRANSMISSION_PASS: "{{ TRANSMISSION_PASS }}"
+    TRANSMISSION_DOMAIN: "{{ TRANSMISSION_DOMAIN }}"
+  register: result
+
+- name: Mostrar resultado
+  debug:
+    msg: "{{ result }}"

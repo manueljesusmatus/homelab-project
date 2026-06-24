@@ -1,0 +1,11 @@
+- type: monitor
+  hide-header: true
+  cache: 1m
+  title: Services
+  sites:
+    - title: casa
+      url: https://casa.qa1.lab.mmatush.cl
+      icon: di:casaos
+    - title: proxmox
+      url: http://192.168.1.50:8006/
+      icon: di:proxmox

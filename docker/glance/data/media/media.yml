@@ -1,0 +1,7 @@
+- type: rss
+  title: Youtube
+  style: vertical-list
+  cache: 2h
+  feeds:
+    - url: https://www.youtube.com/feeds/videos.xml?channel_id=UCNnNCBgckxzqIh1Txw5cgSg
+      title: BaityBait

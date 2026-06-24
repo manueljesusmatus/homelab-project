@@ -1,0 +1,14 @@
+# stacks/excalidraw.yml
+
+- name: Ejecutar Docker Compose
+  community.docker.docker_compose_v2:
+    project_src: ../docker/excalidraw
+    state: present
+  environment:
+    TIMEZONE: "{{ TIMEZONE }}"
+    EXCALIDRAW_DOMAIN: "{{ EXCALIDRAW_DOMAIN }}"
+  register: result
+
+- name: Mostrar resultado
+  debug:
+    msg: "{{ result }}"

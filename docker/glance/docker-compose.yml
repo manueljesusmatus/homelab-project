@@ -1,0 +1,23 @@
+services:
+  glance:
+    image: glanceapp/glance:latest
+    container_name: glance
+    volumes:
+      - ${ROOT_DATA_DIR}/glance:/app/config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - TZ=${TIMEZONE}
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - "traefik.enable=true"
+      - "traefik.http.routers.glance.rule=Host(`${GLANCE_DOMAIN}`)"
+      - "traefik.http.routers.glance.entrypoints=websecure"
+      - "traefik.http.routers.glance.tls.certresolver=cloudflare"
+      - "traefik.http.services.glance.loadbalancer.server.port=8080"
+    networks:
+      - traefik_net
+    restart: unless-stopped
+
+networks:
+  traefik_net:
+    external: true
