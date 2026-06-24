@@ -35,4 +35,4 @@
   register: result
 
 - name: Mostrar resultado
-  include_tasks: _show_result.yml
+  include_tasks: stacks/containers/show_result.yml

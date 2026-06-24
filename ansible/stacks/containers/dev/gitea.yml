@@ -29,7 +29,7 @@
   register: result
 
 - name: Mostrar resultado
-  include_tasks: _show_result.yml
+  include_tasks: stacks/containers/_show_result.yml
 
 - name: Asegurar permisos de ejecución para backup.sh
   ansible.builtin.file:
