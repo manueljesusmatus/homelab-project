@@ -75,7 +75,7 @@
       include_tasks:
         file: "stacks/containers/{{ item }}.yml"
         apply:
-          tags: up
+          tags: containers_up
       loop: "{{ stacks }}"
       when: item not in disabled_stacks
       tags:
