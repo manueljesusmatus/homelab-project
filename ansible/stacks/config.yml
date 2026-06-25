@@ -2,7 +2,7 @@
 
 - name: Ejecutar script de alias de Git
   ansible.builtin.script: 
-    cmd: ../docker/gitea/git/alias.sh
+    cmd: ../docker/git/alias.sh
 
 - name: Crear directorios base
   file:
