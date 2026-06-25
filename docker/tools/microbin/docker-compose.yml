@@ -23,7 +23,7 @@ services:
       - "traefik.http.services.microbin.loadbalancer.server.port=8080"
       # GLANCE
       - "glance.name=microbin"
-      - "glance.icon=gh:microbin"
+      - "glance.icon=sh:microbin"
       - "glance.url=https://${MICROBIN_DOMAIN}"
     restart: unless-stopped
     networks:
